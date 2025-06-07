@@ -1,102 +1,128 @@
 # Demon Programming Language
 
-Demon is a modern, high-performance programming language that combines the best features of C++, Python, and Java. It aims to provide:
-
-- **Performance**: Like C++ with manual memory management and zero-cost abstractions
-- **Readability**: Clean, Python-like syntax
-- **Safety**: Strong, static typing with type inference
-- **Concurrency**: Built-in support for modern concurrency patterns
-- **Interoperability**: Easy integration with C/C++ and Java libraries
+Demon is a lightweight, dynamically-typed scripting language with a clean and simple syntax. It's designed for ease of use and learning while providing powerful programming constructs.
 
 ## Features
 
-1. **Syntax**
-   - Python-like indentation-based blocks
-   - C++-style type declarations with type inference
-   - Java-like OOP with single inheritance + interfaces
-
-2. **Type System**
-   - Strong, static typing with `var` for type inference
-   - Built-in primitives: `int`, `float`, `bool`, `string`, `char`
-   - Complex types: `List<T>`, `Map<K,V>`, `Optional<T>`
-   - Null safety built into the type system
-
-3. **Memory Management**
-   - Manual memory management with optional RAII
-   - Smart pointers for automatic memory management
-   - No garbage collection overhead
-
-4. **Concurrency**
-   - Lightweight threads (goroutine-style)
-   - Message passing between threads
-   - Built-in async/await support
+- **Simple Syntax**: Clean and minimal syntax inspired by modern languages
+- **Dynamic Typing**: No need to declare variable types
+- **First-class Functions**: Functions are first-class citizens
+- **Lexical Scoping**: Variables are lexically scoped
+- **Built-in Data Structures**: Support for lists and basic data types
+- **Control Flow**: Familiar if/else, while, and for loops
+- **Functions**: Define reusable code blocks with parameters
 
 ## Example
 
 ```demon
-// Function definition with type inference
-func add(a: int, b: int) -> int {
-    return a + b
+// Hello World in Demon
+print("Hello, World!");
+
+// Basic arithmetic
+let x = 5 + 3 * 2;
+print("5 + 3 * 2 = ", x);
+
+// Conditional statement
+if (x > 10) {
+    print("x is greater than 10");
+} else {
+    print("x is less than or equal to 10");
 }
 
-// Class definition
-class Person {
-    // Constructor
-    new(name: string, age: int) {
-        this.name = name
-        this.age = age
-    }
-    
-    // Method
-    func greet() -> string {
-        return "Hello, my name is \(name) and I'm \(age) years old."
-    }
+// Function definition
+func greet(name) {
+    return "Hello, " + name + "!";
 }
 
-// Main function
-func main() {
-    // Variables with type inference
-    var x = 10
-    var y = 20
-    
-    // Function call
-    var result = add(x, y)
-    print("Result: \(result)")
-    
-    // Object creation
-    var person = Person("Alice", 30)
-    print(person.greet())
-    
-    // List with type inference
-    var numbers = [1, 2, 3, 4, 5]
-    
-    // For loop with range
-    for i in 0..<numbers.length {
-        print("Number: \(numbers[i])")
-    }
-    
-    // Lambda function
-    var square = (x: int) -> int { return x * x }
-    print("Square of 5: \(square(5))")
+// Function call
+print(greet("Demon"));
+
+// Lists
+let numbers = [1, 1, 2, 3, 5, 8];
+print("Fibonacci sequence:", numbers);
+
+// For loop
+print("Counting from 1 to 5:");
+for (let i = 1; i <= 5; i = i + 1) {
+    print(i);
 }
+
+// While loop
+let count = 3;
+print("Countdown:");
+while (count > 0) {
+    print(count);
+    count = count - 1;
+}
+print("Blast off!");
 ```
 
 ## Getting Started
 
-1. Clone this repository
-2. Run `python demon.py your_script.dm`
+1. Ensure you have Python 3.7+ installed
+2. Clone this repository
+3. Run a Demon script: `python src/demon.py examples/hello.demon`
 
-## Language Specification
+## Language Features
 
-- **Comments**: `//` for single-line, `/* */` for multi-line
-- **Variables**: `var name: Type = value` or `var name = value` (type inference)
-- **Constants**: `const name = value`
-- **Conditionals**: `if`, `elif`, `else` with `and`, `or`, `not`
-- **Loops**: `while`, `for-in`, `for` with range
-- **Functions**: `func name(params) -> ReturnType { ... }`
-- **Classes**: `class Name { ... }` with single inheritance and interfaces
-- **Error Handling**: `try-catch-finally` blocks
-- **Concurrency**: `spawn` for goroutines, `channel<T>` for communication
+### Variables
+```demon
+let x = 10;           // Integer
+let name = "Demon";   // String
+let isActive = true;  // Boolean
+```
+
+### Control Flow
+```demon
+// If-else
+if (x > 10) {
+    print("Greater than 10");
+} else if (x > 5) {
+    print("Greater than 5");
+} else {
+    print("5 or less");
+}
+
+// While loop
+let i = 0;
+while (i < 3) {
+    print(i);
+    i = i + 1;
+}
+
+// For loop
+for (let j = 0; j < 3; j = j + 1) {
+    print(j);
+}
+```
+
+### Functions
+```demon
+// Function definition
+func add(a, b) {
+    return a + b;
+}
+
+// Function call
+let sum = add(5, 3);
+print("Sum:", sum);
+```
+
+### Lists
+```demon
+let fruits = ["apple", "banana", "cherry"];
+fruits.push("date");
+print("Fruits:", fruits);
+print("First fruit:", fruits[0]);
+```
+
+## Implementation
+
+Demon is implemented in Python and includes:
+- Lexical analyzer (scanner)
+- Recursive descent parser
+- Interpreter with runtime environment
+- Support for variables, functions, and control flow
 
 ## Roadmap
 
