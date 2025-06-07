@@ -1,0 +1,191 @@
+"""
+Token types and token class for the Demon programming language.
+"""
+
+from enum import Enum, auto
+from typing import Any, Optional
+
+
+class TokenType(Enum):
+    """Enumeration of all token types in the Demon language."""
+    # Single-character tokens
+    LEFT_PAREN = '('
+    RIGHT_PAREN = ')'
+    LEFT_BRACE = '{'
+    RIGHT_BRACE = '}'
+    LEFT_BRACKET = '['
+    RIGHT_BRACKET = ']'
+    COMMA = ','
+    DOT = '.'
+    MINUS = '-'
+    PLUS = '+'
+    SEMICOLON = ';'
+    SLASH = '/'
+    STAR = '*'
+    COLON = ':'
+    QUESTION = '?'
+    PERCENT = '%'
+    AT = '@'
+    PIPE = '|'
+    BANG = '!'
+    BANG_EQUAL = '!='
+    EQUAL = '='
+    EQUAL_EQUAL = '=='
+    GREATER = '>'
+    GREATER_EQUAL = '>='
+    LESS = '<'
+    LESS_EQUAL = '<='
+    PIPE_GT = '|>'
+    PIPE_FIRST = '|>|'
+    NULL_COALESCE = '??'
+    RANGE_INCL = '..'
+    RANGE_EXCL = '..<'
+    FAT_ARROW = '=>'
+    DOUBLE_ARROW = '->'
+    ARROW = '->'
+    INTERPOLATE = '${'
+    
+    # Literals
+    IDENTIFIER = 'IDENTIFIER'
+    STRING = 'STRING'
+    NUMBER = 'NUMBER'
+    
+    # Keywords
+    AND = 'and'
+    AS = 'as'
+    BREAK = 'break'
+    PRINT = 'print'
+    CATCH = 'catch'
+    EXPORT = 'export'
+    EXTENDS = 'extends'
+    NIL = 'nil'
+    CASE = 'case'
+    DO = 'do'
+    ENUM = 'enum'
+    CLASS = 'class'
+    CONST = 'const'
+    CONTINUE = 'continue'
+    DEFAULT = 'default'
+    ELSE = 'else'
+    FALSE = 'false'
+    FINALLY = 'finally'
+    FOR = 'for'
+    FOR_EACH = 'foreach'
+    FROM = 'from'
+    FUNC = 'func'
+    IF = 'if'
+    IMPLEMENTS = 'implements'
+    IMPORT = 'import'
+    IN = 'in'
+    INCLUDE = 'include'
+    INLINE = 'inline'
+    INTERFACE = 'interface'
+    INTERNAL = 'internal'
+    IS = 'is'
+    LET = 'let'
+    MATCH = 'match'
+    MODULE = 'module'
+    NEW = 'new'
+    NULL = 'null'
+    OF = 'of'
+    OPERATOR = 'operator'
+    OR = 'or'
+    OVERRIDE = 'override'
+    PACKAGE = 'package'
+    PRIVATE = 'private'
+    PROTECTED = 'protected'
+    PUBLIC = 'public'
+    READONLY = 'readonly'
+    REF = 'ref'
+    REQUIRE = 'require'
+    REQUIRE_ONCE = 'require_once'
+    RETURN = 'return'
+    SELF = 'self'
+    STATIC = 'static'
+    SUPER = 'super'
+    SWITCH = 'switch'
+    THIS = 'this'
+    THROW = 'throw'
+    THROWS = 'throws'
+    TRAIT = 'trait'
+    TRUE = 'true'
+    TRY = 'try'
+    TYPE = 'type'
+    TYPEDEF = 'typedef'
+    TYPEOF = 'typeof'
+    UNDEFINED = 'undefined'
+    UNION = 'union'
+    UNSAFE = 'unsafe'
+    USE = 'use'
+    USING = 'using'
+    VAR = 'var'
+    VIRTUAL = 'virtual'
+    VOID = 'void'
+    VOLATILE = 'volatile'
+    WHEN = 'when'
+    WHERE = 'where'
+    WHILE = 'while'
+    WITH = 'with'
+    YIELD = 'yield'
+    
+    # Type annotations
+    ANY = 'any'
+    BOOL = 'bool'
+    BYTE = 'byte'
+    CHAR = 'char'
+    DICT = 'dict'
+    FLOAT = 'float'
+    INT = 'int'
+    LIST = 'list'
+    SET = 'set'
+    STR = 'str'
+    TUPLE = 'tuple'
+    DOUBLE = 'double'
+    DYNAMIC = 'dynamic'
+    LONG = 'long'
+    NEVER = 'never'
+    NUMBER_TYPE = 'number'
+    OBJECT = 'object'
+    SHORT = 'short'
+    STRING_TYPE = 'string'
+    SYMBOL = 'symbol'
+    UINT = 'uint'
+    ULONG = 'ulong'
+    USHORT = 'ushort'
+    VARARG = '...'
+    
+    # DSA types
+    GRAPH = 'graph'
+    NODE = 'node'
+    EDGE = 'edge'
+    TREE = 'tree'
+    BINARY_TREE = 'binary_tree'
+    BINARY_SEARCH_TREE = 'binary_search_tree'
+    HEAP = 'heap'
+    MIN_HEAP = 'min_heap'
+    MAX_HEAP = 'max_heap'
+    STACK = 'stack'
+    QUEUE = 'queue'
+    LINKED_LIST = 'linked_list'
+    HASH_MAP = 'hash_map'
+    HASH_SET = 'hash_set'
+    
+    # Special tokens
+    EOF = 'EOF'
+    UNKNOWN = 'UNKNOWN'
+
+
+class Token:
+    """Represents a token in the source code."""
+    
+    def __init__(self, type: TokenType, lexeme: str, literal: Any, line: int):
+        self.type = type
+        self.lexeme = lexeme
+        self.literal = literal
+        self.line = line
+    
+    def __str__(self):
+        return f"{self.type} {self.lexeme} {self.literal}"
+    
+    def __repr__(self):
+        return str(self)

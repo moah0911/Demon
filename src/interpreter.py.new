@@ -1,0 +1,2 @@
+    def visit_listliteral(self, expr: ast.ListLiteral):
+        return [self.evaluate(element) for element in expr.elements]
