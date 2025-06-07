@@ -135,6 +135,3 @@ Demon is implemented in Python and includes:
 - [ ] Debugger
 - [ ] IDE support
 
-## Contributing
-
-Contributions are welcome! Please read our contributing guidelines before submitting pull requests.
