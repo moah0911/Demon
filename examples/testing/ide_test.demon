@@ -1,0 +1,91 @@
+// Test file for IDE features
+
+// Variables with different types
+let name = "Demon";
+let age = 1;
+let is_active = true;
+let scores = [95, 87, 92, 98];
+
+// Function definition
+func greet(person_name) {
+    return "Hello, " + person_name + "!";
+}
+
+// Function with multiple parameters
+func calculate_average(numbers) {
+    let sum = 0;
+    let count = len(numbers);
+    
+    for (let i = 0; i < count; i = i + 1) {
+        sum = sum + numbers[i];
+    }
+    
+    return sum / count;
+}
+
+// Class-like structure using functions
+func Person(name, age) {
+    let person = {};
+    person.name = name;
+    person.age = age;
+    
+    person.greet = func() {
+        return "Hello, my name is " + person.name;
+    };
+    
+    person.have_birthday = func() {
+        person.age = person.age + 1;
+        return person.age;
+    };
+    
+    return person;
+}
+
+// Main program
+print("IDE Test Program");
+print("---------------");
+
+// Test function calls
+print(greet(name));
+print("Average score:", calculate_average(scores));
+
+// Test object creation
+let alice = Person("Alice", 30);
+print(alice.greet());
+print("Happy birthday! Alice is now", alice.have_birthday());
+
+// Test control flow
+if (age < 18) {
+    print("Minor");
+} else if (age < 65) {
+    print("Adult");
+} else {
+    print("Senior");
+}
+
+// Test loops
+print("Counting from 1 to 5:");
+for (let i = 1; i <= 5; i = i + 1) {
+    print(i);
+}
+
+// Test standard library functions
+let numbers = [4, 2, 8, 5, 1, 3, 7, 6];
+print("Original numbers:", numbers);
+print("Sorted numbers:", sort(numbers));
+print("Minimum:", min(numbers));
+print("Maximum:", max(numbers));
+print("Sum:", sum(numbers));
+
+// Test data structures
+let stack = Stack();
+stack.push(1);
+stack.push(2);
+stack.push(3);
+print("Stack:", stack);
+print("Popped:", stack.pop());
+print("Stack after pop:", stack);
+
+// Test error handling (commented out to avoid actual errors)
+// print(undefined_variable);  // Undefined variable
+// print(10 / 0);  // Division by zero

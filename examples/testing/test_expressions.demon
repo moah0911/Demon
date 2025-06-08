@@ -1,0 +1,6 @@
+// Test expression evaluation
+print("5 + 3 * 2 = ", 5 + 3 * 2);
+
+// Test list assignment and printing
+let numbers = [1, 1, 2, 3, 5, 8];
+print("Fibonacci sequence:", numbers);

@@ -1,0 +1,124 @@
+// Object and property access demo
+
+// Create a simple object using a map literal
+let person = {
+    "name": "Alice",
+    "age": 30,
+    "city": "Wonderland"
+};
+
+// Access properties
+print("Name:", person.name);
+print("Age:", person.age);
+print("City:", person.city);
+
+// Modify properties
+person.age = 31;
+person.city = "Looking Glass Land";
+print("Updated age:", person.age);
+print("Updated city:", person.city);
+
+// Add new properties
+person.job = "Software Engineer";
+print("Job:", person.job);
+
+// Nested objects
+let company = {
+    "name": "Demon Corp",
+    "address": {
+        "street": "123 Main St",
+        "city": "Code City",
+        "country": "Programland"
+    },
+    "employees": ["Alice", "Bob", "Charlie"]
+};
+
+print("Company name:", company.name);
+print("Company address:", company.address);
+print("Street:", company.address.street);
+print("Employees:", company.employees);
+print("First employee:", company.employees[0]);
+
+// Using methods on built-in types
+let message = "  Hello, World!  ";
+print("Original message:", message);
+print("Uppercase:", message.upper());
+print("Lowercase:", message.lower());
+print("Trimmed:", message.trim());
+print("Length:", message.length);
+
+// List methods
+let numbers = [1, 2, 3, 4, 5];
+print("Original numbers:", numbers);
+print("Length:", numbers.length);
+numbers.append(6);
+print("After append:", numbers);
+numbers.insert(0, 0);
+print("After insert:", numbers);
+let removed = numbers.pop();
+print("Popped value:", removed);
+print("After pop:", numbers);
+
+// Function that returns an object
+func create_person(name, age, city) {
+    return {
+        "name": name,
+        "age": age,
+        "city": city,
+        "greet": func() {
+            return "Hello, my name is " + name;
+        }
+    };
+}
+
+let bob = create_person("Bob", 25, "Techville");
+print("Person:", bob);
+print("Greeting:", bob.greet());
+
+// Class-like pattern with methods
+func Person(name, age) {
+    let person = {};
+    person.name = name;
+    person.age = age;
+    
+    person.greet = func() {
+        return "Hello, my name is " + person.name;
+    };
+    
+    person.have_birthday = func() {
+        person.age = person.age + 1;
+        return person.age;
+    };
+    
+    return person;
+}
+
+let charlie = Person("Charlie", 35);
+print(charlie.greet());
+print("Charlie's age:", charlie.age);
+print("After birthday:", charlie.have_birthday());
+
+// Method chaining
+func Builder() {
+    let builder = {};
+    builder.value = 0;
+    
+    builder.add = func(x) {
+        builder.value = builder.value + x;
+        return builder;
+    };
+    
+    builder.multiply = func(x) {
+        builder.value = builder.value * x;
+        return builder;
+    };
+    
+    builder.get = func() {
+        return builder.value;
+    };
+    
+    return builder;
+}
+
+let result = Builder().add(5).multiply(2).add(10).get();
+print("Builder result:", result);  // Should be 20

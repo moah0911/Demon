@@ -61,26 +61,48 @@ print("Blast off!");
 
 1. Ensure you have Python 3.7+ installed
 2. Clone this repository
-3. Run a Demon script: `python src/demon.py examples/hello.demon`
+3. Run a Demon script: `python src/demon_cli.py examples/basic/hello.demon`
+
+## Project Structure
+
+- **src/**: Source code for the language implementation
+  - **core/**: Core language components
+  - **stdlib/**: Standard library implementation
+  - **tools/**: Development tools
+  - **ide_support/**: IDE integration
+- **examples/**: Example Demon programs
+  - **basic/**: Basic language examples
+  - **advanced/**: Advanced feature examples
+  - **testing/**: Test programs
+- **docs/**: Documentation
+- **tests/**: Test suite
+
+## Documentation
+
+- [Architecture Overview](docs/ARCHITECTURE.md)
+- [Examples Guide](docs/EXAMPLES.md)
+- [File Organization](docs/FILE_ORGANIZATION.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Reorganization Plan](REORGANIZATION_PLAN.md)
 
 ## Advanced Features
 
 ### Type Checking
 
-Demon now includes an optional static type checker that can catch type errors before runtime:
+Demon includes an optional static type checker that can catch type errors before runtime:
 
 ```bash
 # Enable type checking
-python src/demon_cli.py --type-check examples/test_type_checker.demon
+python src/demon_cli.py --type-check examples/testing/test_type_checker.demon
 ```
 
 ### Bytecode Compilation
 
-Demon can now compile programs to bytecode and execute them in a virtual machine:
+Demon can compile programs to bytecode and execute them in a virtual machine:
 
 ```bash
 # Enable bytecode VM
-python src/demon_cli.py --bytecode examples/test_bytecode.demon
+python src/demon_cli.py --bytecode examples/testing/test_bytecode.demon
 ```
 
 ### Standard Library
@@ -89,7 +111,7 @@ Demon includes a comprehensive standard library with math functions, string oper
 
 ```bash
 # Run the standard library demo
-python src/demon_cli.py examples/stdlib_demo.demon
+python src/demon_cli.py examples/advanced/stdlib_demo.demon
 ```
 
 ### Package Manager
@@ -110,12 +132,12 @@ Demon includes a full-featured debugger with breakpoints, stepping, variable ins
 
 ```bash
 # Debug a program
-python src/demon_cli.py --debug examples/debug_test.demon
+python src/demon_cli.py --debug examples/testing/debug_test.demon
 ```
 
 ### Command-line Interface
 
-Demon now has a command-line interface with various options:
+Demon has a command-line interface with various options:
 
 ```bash
 # Show help
@@ -125,7 +147,7 @@ python src/demon_cli.py --help
 python src/demon_cli.py --repl
 
 # Run with both type checking and bytecode VM
-python src/demon_cli.py --type-check --bytecode examples/hello.demon
+python src/demon_cli.py --type-check --bytecode examples/basic/hello.demon
 ```
 
 ### IDE Support
@@ -142,14 +164,6 @@ code --install-extension .
 # Start the language server
 python src/demon_cli.py --ide
 ```
-
-The IDE support includes:
-- Syntax highlighting
-- Code completion
-- Error checking and linting
-- Code formatting
-- Debugging integration
-- Snippets for common code patterns
 
 ## Language Features
 
@@ -210,16 +224,9 @@ Demon is implemented in Python and includes:
 - Lexical analyzer (scanner)
 - Recursive descent parser
 - Interpreter with runtime environment
+- Optional bytecode compiler and VM
 - Support for variables, functions, and control flow
 
-## Roadmap
+## License
 
-- [x] Basic lexer and parser
-- [x] Type checker
-- [x] Bytecode compiler
-- [x] Virtual Machine
-- [x] Standard library
-- [x] Package manager
-- [x] Debugger
-- [x] IDE support
-
+This project is licensed under the MIT License - see the LICENSE file for details.

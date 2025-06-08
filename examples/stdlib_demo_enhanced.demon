@@ -1,0 +1,163 @@
+// Enhanced Standard Library Demo
+
+// Math functions
+print("Math Functions:");
+print("sin(0.5) =", sin(0.5));
+print("cos(0.5) =", cos(0.5));
+print("tan(0.5) =", tan(0.5));
+print("sqrt(16) =", sqrt(16));
+print("pow(2, 3) =", pow(2, 3));
+print("exp(1) =", exp(1));
+print("log(10) =", log(10));
+print("log10(100) =", log10(100));
+print("PI =", pi);
+print("E =", e);
+print("floor(3.7) =", floor(3.7));
+print("ceil(3.2) =", ceil(3.2));
+print("round(3.14159, 2) =", round(3.14159, 2));
+print("degrees(pi) =", degrees(pi));
+print("radians(180) =", radians(180));
+print("");
+
+// String functions
+print("String Functions:");
+let greeting = "  Hello, World!  ";
+print("Original:", greeting);
+print("len(greeting) =", len(greeting));
+print("upper(greeting) =", upper(greeting));
+print("lower(greeting) =", lower(greeting));
+print("capitalize(greeting) =", capitalize(greeting));
+print("trim(greeting) =", trim(greeting));
+print("ltrim(greeting) =", ltrim(greeting));
+print("rtrim(greeting) =", rtrim(greeting));
+print("split(greeting) =", split(greeting));
+print("contains(greeting, 'World') =", contains(greeting, "World"));
+print("replace(greeting, 'World', 'Demon') =", replace(greeting, "World", "Demon"));
+print("find(greeting, 'World') =", find(greeting, "World"));
+print("slice(greeting, 3, 8) =", slice(greeting, 3, 8));
+print("pad_left('Hi', 5) =", pad_left("Hi", 5));
+print("pad_right('Hi', 5) =", pad_right("Hi", 5));
+print("pad_center('Hi', 5) =", pad_center("Hi", 5));
+print("");
+
+// List functions
+print("List Functions:");
+let fruits = ["apple", "banana", "cherry"];
+print("Original:", fruits);
+print("append(fruits, 'date') =", append(fruits, "date"));
+print("insert(fruits, 1, 'blueberry') =", insert(fruits, 1, "blueberry"));
+print("slice(fruits, 1, 3) =", slice(fruits, 1, 3));
+print("reverse(fruits) =", reverse(fruits));
+print("sort(fruits) =", sort(fruits));
+print("map(x => x.upper(), fruits) =", map(func(x) { return upper(x); }, fruits));
+print("filter(x => len(x) > 5, fruits) =", filter(func(x) { return len(x) > 5; }, fruits));
+print("reduce((acc, x) => acc + x, fruits, '') =", reduce(func(acc, x) { return acc + x; }, fruits, ""));
+print("chunk(fruits, 2) =", chunk(fruits, 2));
+print("unique([1, 2, 2, 3, 3, 3]) =", unique([1, 2, 2, 3, 3, 3]));
+print("");
+
+// Dictionary functions
+print("Dictionary Functions:");
+let person = {"name": "Alice", "age": 30, "city": "Wonderland"};
+print("Original:", person);
+print("keys(person) =", keys(person));
+print("values(person) =", values(person));
+print("items(person) =", items(person));
+print("get(person, 'name') =", get(person, "name"));
+print("get(person, 'job', 'unknown') =", get(person, "job", "unknown"));
+print("has_key(person, 'age') =", has_key(person, "age"));
+print("update(person, {'job': 'Developer'}) =", update(person, {"job": "Developer"}));
+print("merge(person, {'hobby': 'Reading'}) =", merge(person, {"hobby": "Reading"}));
+print("pick(person, ['name', 'age']) =", pick(person, ["name", "age"]));
+print("omit(person, ['city', 'job']) =", omit(person, ["city", "job"]));
+print("");
+
+// Functional programming
+print("Functional Programming:");
+let add = func(x, y) { return x + y; };
+let multiply = func(x, y) { return x * y; };
+let square = func(x) { return x * x; };
+let double = func(x) { return x * 2; };
+
+print("pipe(5, double, square) =", pipe(5, double, square));
+let addFive = curry(add, 5);
+print("curry(add, 5)(10) =", addFive(10));
+let memoizedFib = memoize(func(n) {
+    if (n <= 1) return n;
+    return memoizedFib(n-1) + memoizedFib(n-2);
+});
+print("memoizedFib(10) =", memoizedFib(10));
+print("");
+
+// Data structures
+print("Data Structures:");
+
+// Stack
+print("Stack:");
+let stack = Stack();
+stack.push(1).push(2).push(3);
+print("stack =", stack);
+print("stack.pop() =", stack.pop());
+print("stack.peek() =", stack.peek());
+print("stack.size() =", stack.size());
+print("stack.to_list() =", stack.to_list());
+print("");
+
+// Queue
+print("Queue:");
+let queue = Queue();
+queue.enqueue("first").enqueue("second").enqueue("third");
+print("queue =", queue);
+print("queue.dequeue() =", queue.dequeue());
+print("queue.peek() =", queue.peek());
+print("queue.size() =", queue.size());
+print("queue.to_list() =", queue.to_list());
+print("");
+
+// Priority Queue
+print("Priority Queue:");
+let pq = PriorityQueue();
+pq.enqueue("medium", 2).enqueue("high", 1).enqueue("low", 3);
+print("pq =", pq);
+print("pq.dequeue() =", pq.dequeue());  // Should return "high" (priority 1)
+print("pq.dequeue() =", pq.dequeue());  // Should return "medium" (priority 2)
+print("");
+
+// Set
+print("Set:");
+let set1 = Set([1, 2, 3, 3, 2, 1]);
+let set2 = Set([3, 4, 5]);
+print("set1 =", set1);
+print("set2 =", set2);
+print("set1.union(set2) =", set1.union(set2));
+print("set1.intersection(set2) =", set1.intersection(set2));
+print("set1.difference(set2) =", set1.difference(set2));
+print("set1.contains(2) =", set1.contains(2));
+print("set1.to_list() =", set1.to_list());
+print("");
+
+// Graph
+print("Graph:");
+let graph = Graph();
+graph.add_vertex("A").add_vertex("B").add_vertex("C").add_vertex("D");
+graph.add_edge("A", "B", 1).add_edge("A", "C", 2).add_edge("B", "D", 3).add_edge("C", "D", 1);
+print("graph =", graph);
+print("graph.get_vertices() =", graph.get_vertices());
+print("graph.get_neighbors('A') =", graph.get_neighbors("A"));
+print("graph.dfs('A') =", graph.dfs("A"));
+print("graph.bfs('A') =", graph.bfs("A"));
+print("graph.dijkstra('A') =", graph.dijkstra("A"));
+print("");
+
+// Tree
+print("Tree:");
+let tree = Tree();
+let root = tree.set_root("root");
+let child1 = root.add_child("child1");
+let child2 = root.add_child("child2");
+child1.add_child("grandchild1");
+child1.add_child("grandchild2");
+child2.add_child("grandchild3");
+print("tree =", tree);
+print("tree.dfs() =", tree.dfs());
+print("tree.bfs() =", tree.bfs());

@@ -1,0 +1,34 @@
+// Test file for the bytecode compiler and VM
+
+// Basic arithmetic
+let a = 5;
+let b = 3;
+print("a + b =", a + b);
+print("a - b =", a - b);
+print("a * b =", a * b);
+print("a / b =", a / b);
+
+// Control flow
+if (a > b) {
+    print("a is greater than b");
+} else {
+    print("a is not greater than b");
+}
+
+// Loops
+print("Counting from 1 to 5:");
+let i = 1;
+while (i <= 5) {
+    print(i);
+    i = i + 1;
+}
+
+// Functions
+func factorial(n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+print("Factorial of 5 =", factorial(5));
