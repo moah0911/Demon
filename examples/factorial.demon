@@ -1,0 +1,50 @@
+// Factorial calculator in Demon
+
+// Function to calculate factorial recursively
+func factorial(n) {
+    if (n <= 1) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+// Function to calculate factorial iteratively
+func factorialIterative(n) {
+    let result = 1;
+    let i = 1;
+    
+    while (i <= n) {
+        result = result * i;
+        i = i + 1;
+    }
+    
+    return result;
+}
+
+// Test the factorial functions
+print("Factorial Demo");
+print("--------------");
+
+// Calculate factorials recursively
+print("Recursive implementation:");
+print("0! =", factorial(0));
+print("1! =", factorial(1));
+print("2! =", factorial(2));
+print("3! =", factorial(3));
+print("4! =", factorial(4));
+print("5! =", factorial(5));
+
+// Calculate factorials iteratively
+print("\nIterative implementation:");
+print("0! =", factorialIterative(0));
+print("1! =", factorialIterative(1));
+print("2! =", factorialIterative(2));
+print("3! =", factorialIterative(3));
+print("4! =", factorialIterative(4));
+print("5! =", factorialIterative(5));
+
+// Compare performance (for larger numbers)
+let n = 10;
+print("\nFactorial of", n, "is", factorial(n));
+print("Factorial of", n, "is", factorialIterative(n));

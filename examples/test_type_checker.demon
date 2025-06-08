@@ -1,0 +1,28 @@
+// Test file for the type checker
+
+// Variable declarations with different types
+let a = 5;
+let b = "hello";
+let c = true;
+let d = [1, 2, 3];
+
+// Type errors (should be caught by type checker)
+let result = a + b;  // Error: Cannot add number and string
+let flag = a && c;   // Error: Cannot use logical AND on number
+
+// Function with type mismatch in return
+func add(x, y) {
+    if (x > 10) {
+        return "too large";  // Error: Return type mismatch
+    }
+    return x + y;
+}
+
+// Correct function
+func multiply(x, y) {
+    return x * y;
+}
+
+// Test the functions
+print(add(3, 4));
+print(multiply(5, 6));

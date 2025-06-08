@@ -275,6 +275,10 @@ class Interpreter(ast.Visitor):
         
         # Add native functions
         self.globals.define("clock", NativeFunction("clock", 0, lambda *args: time.time()))
+        
+        # Register standard library functions
+        from stdlib import DemonStdLib
+        DemonStdLib.register_all(self)
     
     def interpret(self, statements: List[ast.Stmt]):
         """Interpret a list of statements."""

@@ -1,0 +1,102 @@
+// Demon Standard Library Demo
+
+// Math functions
+print("Math Functions:");
+print("sin(0.5) =", sin(0.5));
+print("cos(0.5) =", cos(0.5));
+print("sqrt(16) =", sqrt(16));
+print("pow(2, 3) =", pow(2, 3));
+print("PI =", pi);
+print("E =", e);
+print("floor(3.7) =", floor(3.7));
+print("ceil(3.2) =", ceil(3.2));
+print("round(3.14159, 2) =", round(3.14159, 2));
+print("");
+
+// Random functions
+print("Random Functions:");
+print("random() =", random());
+print("randint(1, 10) =", randint(1, 10));
+let numbers = [1, 2, 3, 4, 5];
+print("choice([1, 2, 3, 4, 5]) =", choice(numbers));
+print("");
+
+// String functions
+print("String Functions:");
+let greeting = "  Hello, World!  ";
+print("Original:", greeting);
+print("len(greeting) =", len(greeting));
+print("upper(greeting) =", upper(greeting));
+print("lower(greeting) =", lower(greeting));
+print("trim(greeting) =", trim(greeting));
+print("split(greeting) =", split(greeting));
+print("contains(greeting, 'World') =", contains(greeting, "World"));
+print("replace(greeting, 'World', 'Demon') =", replace(greeting, "World", "Demon"));
+print("");
+
+// List functions
+print("List Functions:");
+let fruits = ["apple", "banana", "cherry"];
+print("Original:", fruits);
+print("append(fruits, 'date') =", append(fruits, "date"));
+print("insert(fruits, 1, 'blueberry') =", insert(fruits, 1, "blueberry"));
+print("slice(fruits, 1, 3) =", slice(fruits, 1, 3));
+print("reverse(fruits) =", reverse(fruits));
+print("sort(fruits) =", sort(fruits));
+print("");
+
+// Higher-order functions
+print("Higher-order Functions:");
+let nums = [1, 2, 3, 4, 5];
+print("Original:", nums);
+print("map(x => x * 2, nums) =", map(func(x) { return x * 2; }, nums));
+print("filter(x => x > 2, nums) =", filter(func(x) { return x > 2; }, nums));
+print("reduce((acc, x) => acc + x, nums, 0) =", reduce(func(acc, x) { return acc + x; }, nums, 0));
+print("sum(nums) =", sum(nums));
+print("min(nums) =", min(nums));
+print("max(nums) =", max(nums));
+print("");
+
+// Data structures
+print("Data Structures:");
+
+// Stack
+print("Stack:");
+let stack = Stack();
+stack.push(1).push(2).push(3);
+print("stack =", stack);
+print("stack.pop() =", stack.pop());
+print("stack.peek() =", stack.peek());
+print("stack.size() =", stack.size());
+print("");
+
+// Queue
+print("Queue:");
+let queue = Queue();
+queue.enqueue("first").enqueue("second").enqueue("third");
+print("queue =", queue);
+print("queue.dequeue() =", queue.dequeue());
+print("queue.peek() =", queue.peek());
+print("queue.size() =", queue.size());
+print("");
+
+// Set
+print("Set:");
+let set1 = Set([1, 2, 3, 3, 2, 1]);
+let set2 = Set([3, 4, 5]);
+print("set1 =", set1);
+print("set2 =", set2);
+print("set1.union(set2) =", set1.union(set2));
+print("set1.intersection(set2) =", set1.intersection(set2));
+print("set1.difference(set2) =", set1.difference(set2));
+print("");
+
+// Graph
+print("Graph:");
+let graph = Graph();
+graph.add_vertex("A").add_vertex("B").add_vertex("C").add_vertex("D");
+graph.add_edge("A", "B", 1).add_edge("A", "C", 2).add_edge("B", "D", 3).add_edge("C", "D", 1);
+print("graph =", graph);
+print("graph.dfs('A') =", graph.dfs("A"));
+print("graph.bfs('A') =", graph.bfs("A"));
+print("graph.dijkstra('A') =", graph.dijkstra("A"));

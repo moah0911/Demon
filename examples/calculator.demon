@@ -1,0 +1,53 @@
+// Simple calculator program in Demon
+
+// Function to add two numbers
+func add(a, b) {
+    return a + b;
+}
+
+// Function to subtract two numbers
+func subtract(a, b) {
+    return a - b;
+}
+
+// Function to multiply two numbers
+func multiply(a, b) {
+    return a * b;
+}
+
+// Function to divide two numbers
+func divide(a, b) {
+    if (b == 0) {
+        print("Error: Division by zero");
+        return 0;
+    }
+    return a / b;
+}
+
+// Test the calculator functions
+print("Calculator Demo");
+print("---------------");
+print("Addition: 5 + 3 =", add(5, 3));
+print("Subtraction: 10 - 4 =", subtract(10, 4));
+print("Multiplication: 6 * 7 =", multiply(6, 7));
+print("Division: 20 / 5 =", divide(20, 5));
+print("Division by zero:", divide(10, 0));
+
+// Calculator with user input simulation
+let x = 8;
+let y = 9;
+let operation = "multiply"; // Simulate selecting "multiply"
+
+// Using a simple if-else chain for operation selection
+let result = 0;
+if (operation == "add") {
+    result = add(x, y);
+} else if (operation == "subtract") {
+    result = subtract(x, y);
+} else if (operation == "multiply") {
+    result = multiply(x, y);
+} else if (operation == "divide") {
+    result = divide(x, y);
+}
+
+print("Calculated:", x, operation, y, "=", result);

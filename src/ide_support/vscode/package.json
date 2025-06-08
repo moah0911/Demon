@@ -1,0 +1,126 @@
+{
+  "name": "demon-language",
+  "displayName": "Demon Programming Language",
+  "description": "Language support for the Demon programming language",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Formatters",
+    "Linters"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "demon",
+        "aliases": ["Demon", "demon"],
+        "extensions": [".demon"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "demon",
+        "scopeName": "source.demon",
+        "path": "./syntaxes/demon.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "demon",
+        "path": "./snippets/demon.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "demon.restart",
+        "title": "Restart Demon Language Server"
+      },
+      {
+        "command": "demon.typeCheck",
+        "title": "Run Demon Type Checker"
+      },
+      {
+        "command": "demon.format",
+        "title": "Format Demon Code"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Demon",
+      "properties": {
+        "demon.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable Demon language support"
+        },
+        "demon.languageServer.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable Demon language server"
+        },
+        "demon.languageServer.path": {
+          "type": "string",
+          "default": "demon-language-server",
+          "description": "Path to Demon language server executable"
+        },
+        "demon.typeChecking.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable type checking"
+        },
+        "demon.formatting.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable code formatting"
+        },
+        "demon.formatting.tabSize": {
+          "type": "number",
+          "default": 4,
+          "description": "Number of spaces per tab"
+        },
+        "demon.formatting.insertSpaces": {
+          "type": "boolean",
+          "default": true,
+          "description": "Insert spaces instead of tabs"
+        },
+        "demon.formatting.bracesOnNewLine": {
+          "type": "boolean",
+          "default": false,
+          "description": "Place opening braces on a new line"
+        },
+        "demon.linting.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable linting"
+        }
+      }
+    }
+  },
+  "activationEvents": [
+    "onLanguage:demon",
+    "onCommand:demon.restart",
+    "onCommand:demon.typeCheck",
+    "onCommand:demon.format"
+  ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint . --ext .ts,.js",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.17.0",
+    "@types/vscode": "^1.60.0",
+    "typescript": "^4.3.5",
+    "@vscode/vsce": "^2.15.0"
+  }
+}

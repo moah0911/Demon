@@ -21,6 +21,9 @@ from demon_ast import *
 from parser import Parser, ParseError
 from resolver import Resolver
 from interpreter import Interpreter, RuntimeError, Return, Break, Continue, Environment
+from type_checker import TypeChecker
+from bytecode import BytecodeCompiler
+from vm import VM
 
 T = TypeVar('T')
 K = TypeVar('K')
@@ -665,6 +668,9 @@ class Demon:
         self.had_runtime_error = False
         self.interpreter = Interpreter(self)
         self.resolver = Resolver(self.interpreter)
+        self.enable_type_checking = False  # Type checking is disabled by default
+        self.use_bytecode = False  # Use bytecode VM instead of AST interpreter
+        self.vm = VM(self)
     
     def run_file(self, path: str) -> None:
         """Run a Demon script from a file."""
@@ -772,6 +778,20 @@ class Demon:
         if statements is not None:
             statements = [stmt for stmt in statements if stmt is not None]
         
+        # Type checking (optional, can be enabled/disabled)
+        if self.enable_type_checking and statements:
+            type_checker = TypeChecker(self)
+            type_errors = type_checker.check(statements)
+            
+            # Report type errors
+            for error in type_errors:
+                print(error)
+            
+            # Stop if there were type errors
+            if type_errors:
+                self.had_error = True
+                return
+        
         # Resolve variables
         self.resolver.resolve(statements)
         
@@ -781,7 +801,14 @@ class Demon:
             
         # Interpret the program
         if statements:  # Only interpret if there are statements
-            self.interpreter.interpret(statements)
+            if self.use_bytecode:
+                # Compile to bytecode and run in VM
+                compiler = BytecodeCompiler(self)
+                chunk = compiler.compile(statements)
+                self.vm.interpret(chunk)
+            else:
+                # Use AST interpreter
+                self.interpreter.interpret(statements)
     
     def error(self, line: int, message: str, file_path: str = "<stdin>") -> None:
         """Report a syntax error."""
