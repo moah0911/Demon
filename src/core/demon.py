@@ -366,6 +366,9 @@ class Scanner:
         'set': TokenType.SET,
         'any': TokenType.ANY,
         'void': TokenType.VOID,
+        
+        # For-each loop
+        'in': TokenType.IN,
     }
     
     def __init__(self, source: str, file_path: str = "<stdin>"):
@@ -766,9 +769,16 @@ class Demon:
                 # Use AST interpreter
                 self.interpreter.interpret(statements)
     
-    def error(self, line: int, message: str, file_path: str = "<stdin>") -> None:
+    def error(self, token: Token, message: str) -> None:
         """Report a syntax error."""
-        print(f"[{file_path}:{line}] Error: {message}")
+        if isinstance(token, int):
+            # Handle old-style error calls
+            line = token
+            file_path = "<stdin>"
+            print(f"[{file_path}:{line}] Error: {message}")
+        else:
+            # Handle new-style error calls with token
+            print(f"[line {token.line}] Error at '{token.lexeme}': {message}")
         self.had_error = True
     
     def runtime_error(self, error: RuntimeError) -> None:

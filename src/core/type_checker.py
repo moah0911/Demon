@@ -4,8 +4,8 @@ This implements static type checking for Demon code.
 """
 
 from typing import Dict, List, Optional, Set, Any, Union
-import demon_ast as ast
-from tokens import Token, TokenType
+from . import ast
+from .tokens import Token, TokenType
 
 class TypeError:
     """Represents a type error in the Demon language."""

@@ -7,8 +7,8 @@ from enum import Enum
 from typing import Dict, List, Optional, Set, Tuple, Any, Union
 from collections import defaultdict, namedtuple
 
-import demon_ast as ast
-from tokens import Token, TokenType
+from . import ast
+from .tokens import Token, TokenType
 
 class RuntimeError(Exception):
     """Runtime error for the Demon interpreter."""
@@ -142,7 +142,7 @@ class Resolver(ast.Visitor):
         if stmt.else_branch is not None:
             self.visit_stmt(stmt.else_branch)
     
-    def visit_print(self, stmt: ast.Print):
+    def visit_print_stmt(self, stmt: ast.Print):
         for expr in stmt.expressions:
             self.visit_expr(expr)
     
@@ -282,119 +282,15 @@ class Resolver(ast.Visitor):
     def visit_lambda_expr(self, expr: ast.Lambda):
         self.resolve_function_like(expr.params, expr.body, FunctionType.LAMBDA)
     
-    def visit_match_expr(self, expr: ast.Match):
-        self.visit_expr(expr.value)
-        
-        for pattern, body in expr.cases:
-            if pattern is not None:
-                self.visit_expr(pattern)
-            self.resolve(body)
-        
-        if expr.default is not None:
-            self.resolve(expr.default)
-    
-    def visit_pipeline_expr(self, expr: ast.Pipeline):
-        self.visit_expr(expr.left)
-        self.visit_expr(expr.right)
-    
-    def visit_range_expr(self, expr: ast.Range):
-        self.visit_expr(expr.start)
-        self.visit_expr(expr.end)
-    
-    def visit_list_literal_expr(self, expr: ast.ListLiteral):
+    def visit_listliteral_expr(self, expr: ast.ListLiteral):
         for element in expr.elements:
             self.visit_expr(element)
     
-    def visit_grouping(self, expr: ast.Grouping):
-        self.visit_expr(expr.expression)
-    
-    def visit_literal(self, expr: ast.Literal):
-        pass  # No need to resolve literals
-        
-    def visit_var(self, stmt: ast.Var):
-        if stmt.initializer is not None:
-            self.visit_expr(stmt.initializer)
-        self.declare(stmt.name)
-        self.define(stmt.name)
-        
-    def visit_binary(self, expr: ast.Binary):
-        self.visit_expr(expr.left)
-        self.visit_expr(expr.right)
-        
-    def visit_if(self, stmt: ast.If):
-        self.visit_expr(stmt.condition)
-        self.visit_stmt(stmt.then_branch)
-        if stmt.else_branch is not None:
-            self.visit_stmt(stmt.else_branch)
-            
-    def visit_variable(self, expr: ast.Variable):
-        if self.scopes and self.scopes[-1].get(expr.name.lexeme, True) is False:
-            raise RuntimeError(expr.name, "Can't read local variable in its own initializer.")
-        self.resolve_local(expr, expr.name)
-        
-    def visit_block(self, stmt: ast.Block):
-        self.begin_scope()
-        self.resolve(stmt.statements)
-        self.end_scope()
-        
-    def resolve_function(self, function: ast.Function, function_type: FunctionType):
-        enclosing_function = self.current_function
-        self.current_function = function_type
-        
-        self.begin_scope()
-        for param in function.params:
-            if isinstance(param, tuple):
-                # Handle tuple parameters (name, type)
-                param_name = param[0]
-            else:
-                param_name = param
-            self.declare(param_name)
-            self.define(param_name)
-        
-        self.resolve(function.body)
-        self.end_scope()
-        
-        self.current_function = enclosing_function
-        
-    def visit_function(self, stmt: ast.Function):
-        self.declare(stmt.name)
-        self.define(stmt.name)
-        
-        self.resolve_function(stmt, FunctionType.FUNCTION)
-        
-    def visit_return(self, stmt: ast.Return):
-        if self.current_function == FunctionType.NONE:
-            raise RuntimeError(stmt.keyword, "Can't return from top-level code.")
-            
-        if stmt.value is not None:
-            self.visit_expr(stmt.value)
-            
-    def visit_call(self, expr: ast.Call):
-        self.visit_expr(expr.callee)
-        
-        for argument in expr.arguments:
-            self.visit_expr(argument)
-            
-    def visit_listliteral(self, expr: ast.ListLiteral):
-        for element in expr.elements:
-            self.visit_expr(element)
-            
-    def visit_while(self, stmt: ast.While):
-        self.visit_expr(stmt.condition)
-        self.visit_stmt(stmt.body)
-        
-    def visit_expression(self, stmt: ast.Expression):
-        self.visit_expr(stmt.expression)
-        
-    def visit_assign(self, expr: ast.Assign):
-        self.visit_expr(expr.value)
-        self.resolve_local(expr, expr.name)
-    
-    def visit_map_literal_expr(self, expr: ast.MapLiteral):
+    def visit_mapliteral_expr(self, expr: ast.MapLiteral):
         for key, value in expr.entries:
             self.visit_expr(value)  # Keys are always identifiers, no need to resolve
     
-    def visit_block_expr(self, expr: ast.BlockExpr):
+    def visit_blockexpr_expr(self, expr: ast.BlockExpr):
         self.begin_scope()
         self.resolve(expr.statements)
         self.end_scope()

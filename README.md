@@ -1,232 +1,141 @@
 # Demon Programming Language
 
-Demon is a lightweight, dynamically-typed scripting language with a clean and simple syntax. It's designed for ease of use and learning while providing powerful programming constructs.
+<div align="center">
+  <img src="https://via.placeholder.com/200x200?text=Demon" alt="Demon Logo" width="200" height="200">
+  <h3>A modern, expressive programming language</h3>
+</div>
 
-## Features
+## Overview
 
-- **Simple Syntax**: Clean and minimal syntax inspired by modern languages
-- **Dynamic Typing**: No need to declare variable types
-- **First-class Functions**: Functions are first-class citizens
-- **Lexical Scoping**: Variables are lexically scoped
-- **Built-in Data Structures**: Support for lists and basic data types
-- **Control Flow**: Familiar if/else, while, and for loops
-- **Functions**: Define reusable code blocks with parameters
-
-## Example
+Demon is a dynamic programming language designed for clarity, expressiveness, and ease of use. It combines the best features of modern languages with a clean syntax and powerful abstractions.
 
 ```demon
 // Hello World in Demon
 print("Hello, World!");
 
-// Basic arithmetic
-let x = 5 + 3 * 2;
-print("5 + 3 * 2 = ", x);
-
-// Conditional statement
-if (x > 10) {
-    print("x is greater than 10");
-} else {
-    print("x is less than or equal to 10");
-}
-
-// Function definition
+// Functions
 func greet(name) {
     return "Hello, " + name + "!";
 }
 
-// Function call
 print(greet("Demon"));
-
-// Lists
-let numbers = [1, 1, 2, 3, 5, 8];
-print("Fibonacci sequence:", numbers);
-
-// For loop
-print("Counting from 1 to 5:");
-for (let i = 1; i <= 5; i = i + 1) {
-    print(i);
-}
-
-// While loop
-let count = 3;
-print("Countdown:");
-while (count > 0) {
-    print(count);
-    count = count - 1;
-}
-print("Blast off!");
 ```
 
-## Getting Started
+## Features
 
-1. Ensure you have Python 3.7+ installed
-2. Clone this repository
-3. Run a Demon script: `python src/demon_cli.py examples/basic/hello.demon`
+- **Clean, Readable Syntax** - Inspired by JavaScript, Python, and Rust
+- **First-class Functions** - Functions as values, closures, and higher-order functions
+- **Dynamic Typing** - Flexible type system with runtime type checking
+- **Object-Oriented** - Classes, inheritance, and methods
+- **Data Structures** - Lists, maps, and more
+- **Control Flow** - If/else, while loops, and blocks
+- **Error Handling** - Graceful error handling patterns
 
-## Project Structure
-
-- **src/**: Source code for the language implementation
-  - **core/**: Core language components
-  - **stdlib/**: Standard library implementation
-  - **tools/**: Development tools
-  - **ide_support/**: IDE integration
-- **examples/**: Example Demon programs
-  - **basic/**: Basic language examples
-  - **advanced/**: Advanced feature examples
-  - **testing/**: Test programs
-- **docs/**: Documentation
-- **tests/**: Test suite
-
-## Documentation
-
-- [Architecture Overview](docs/ARCHITECTURE.md)
-- [Examples Guide](docs/EXAMPLES.md)
-- [File Organization](docs/FILE_ORGANIZATION.md)
-- [Contributing Guidelines](CONTRIBUTING.md)
-- [Reorganization Plan](REORGANIZATION_PLAN.md)
-
-## Advanced Features
-
-### Type Checking
-
-Demon includes an optional static type checker that can catch type errors before runtime:
+## Installation
 
 ```bash
-# Enable type checking
-python src/demon_cli.py --type-check examples/testing/test_type_checker.demon
+# Clone the repository
+git clone https://github.com/yourusername/demon.git
+cd demon
+
+# Run a Demon script
+python run.py examples/basic/hello_fixed.demon
 ```
 
-### Bytecode Compilation
+## Language Examples
 
-Demon can compile programs to bytecode and execute them in a virtual machine:
+### Variables and Constants
 
-```bash
-# Enable bytecode VM
-python src/demon_cli.py --bytecode examples/testing/test_bytecode.demon
-```
-
-### Standard Library
-
-Demon includes a comprehensive standard library with math functions, string operations, data structures, and more:
-
-```bash
-# Run the standard library demo
-python src/demon_cli.py examples/advanced/stdlib_demo.demon
-```
-
-### Package Manager
-
-Demon has a built-in package manager for downloading, installing, and managing packages:
-
-```bash
-# Install a package (when registry is available)
-python src/demon_cli.py --package install example-package
-
-# List installed packages
-python src/demon_cli.py --package list
-```
-
-### Debugger
-
-Demon includes a full-featured debugger with breakpoints, stepping, variable inspection, and watch expressions:
-
-```bash
-# Debug a program
-python src/demon_cli.py --debug examples/testing/debug_test.demon
-```
-
-### Command-line Interface
-
-Demon has a command-line interface with various options:
-
-```bash
-# Show help
-python src/demon_cli.py --help
-
-# Start REPL
-python src/demon_cli.py --repl
-
-# Run with both type checking and bytecode VM
-python src/demon_cli.py --type-check --bytecode examples/basic/hello.demon
-```
-
-### IDE Support
-
-Demon includes IDE integration with features like syntax highlighting, code completion, and error checking:
-
-```bash
-# Install the VS Code extension
-cd src/ide_support/vscode
-npm install
-npm run compile
-code --install-extension .
-
-# Start the language server
-python src/demon_cli.py --ide
-```
-
-## Language Features
-
-### Variables
 ```demon
-let x = 10;           // Integer
-let name = "Demon";   // String
-let isActive = true;  // Boolean
+let x = 10;        // Variable
+const PI = 3.14159; // Constant
 ```
 
 ### Control Flow
+
 ```demon
-// If-else
+// Conditional statements
 if (x > 10) {
-    print("Greater than 10");
-} else if (x > 5) {
-    print("Greater than 5");
+    print("x is greater than 10");
+} else if (x < 10) {
+    print("x is less than 10");
 } else {
-    print("5 or less");
+    print("x is equal to 10");
 }
 
-// While loop
-let i = 0;
-while (i < 3) {
+// While loops
+let i = 1;
+while (i <= 5) {
     print(i);
     i = i + 1;
-}
-
-// For loop
-for (let j = 0; j < 3; j = j + 1) {
-    print(j);
 }
 ```
 
 ### Functions
+
 ```demon
 // Function definition
 func add(a, b) {
     return a + b;
 }
 
-// Function call
-let sum = add(5, 3);
-print("Sum:", sum);
+// Higher-order functions
+func applyTwice(f, x) {
+    return f(f(x));
+}
+
+func addOne(x) {
+    return x + 1;
+}
+
+print(applyTwice(addOne, 5)); // Outputs: 7
 ```
 
-### Lists
+### Data Structures
+
 ```demon
-let fruits = ["apple", "banana", "cherry"];
-fruits.push("date");
-print("Fruits:", fruits);
-print("First fruit:", fruits[0]);
+// Lists
+let numbers = [1, 2, 3, 4, 5];
+print("List:", numbers);
+
+// Maps
+let person = {"name": "John", "age": 30};
 ```
 
-## Implementation
+### Classes and Objects
 
-Demon is implemented in Python and includes:
-- Lexical analyzer (scanner)
-- Recursive descent parser
-- Interpreter with runtime environment
-- Optional bytecode compiler and VM
-- Support for variables, functions, and control flow
+```demon
+class Point {
+    init(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    
+    distance() {
+        return sqrt(this.x * this.x + this.y * this.y);
+    }
+    
+    toString() {
+        return "Point(" + this.x + ", " + this.y + ")";
+    }
+}
+
+let p = Point(3, 4);
+print(p.toString());         // Outputs: Point(3, 4)
+print(p.distance());         // Outputs: 5.0
+```
+
+## Running the REPL
+
+```bash
+python run.py
+```
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License
+
+## Acknowledgments
+
+- Inspired by the book "Crafting Interpreters" by Robert Nystrom
+- Thanks to all contributors who have helped shape Demon

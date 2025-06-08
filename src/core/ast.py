@@ -3,7 +3,7 @@ Abstract Syntax Tree (AST) nodes for the Demon programming language.
 """
 
 from typing import List, Dict, Optional, Any, Union, Tuple
-from tokens import Token
+from .tokens import Token
 
 class Visitor:
     """Base visitor class for AST nodes."""

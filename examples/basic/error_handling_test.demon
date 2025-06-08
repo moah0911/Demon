@@ -1,0 +1,44 @@
+// Error handling test
+
+// Try to catch some common errors and handle them gracefully
+
+print("Error handling test");
+
+// 1. Division by zero
+print("\n1. Division by zero");
+func safeDivide(a, b) {
+    if (b == 0) {
+        return "Error: Division by zero";
+    }
+    return a / b;
+}
+
+print("safeDivide(10, 2) =", safeDivide(10, 2));
+print("safeDivide(10, 0) =", safeDivide(10, 0));
+
+// 2. Null check
+print("\n2. Null check");
+func safeToString(value) {
+    if (value == nil) {
+        return "Error: Null value";
+    }
+    return value;
+}
+
+print("safeToString('hello') =", safeToString("hello"));
+print("safeToString(nil) =", safeToString(nil));
+
+// 3. Type checking (simplified since typeof isn't available)
+print("\n3. Simple validation");
+func add(a, b) {
+    // Simple validation
+    if (a == nil or b == nil) {
+        return "Error: Arguments cannot be nil";
+    }
+    return a + b;
+}
+
+print("add(5, 3) =", add(5, 3));
+print("add(nil, 3) =", add(nil, 3));
+
+print("\nError handling test completed!");

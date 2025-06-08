@@ -11,9 +11,9 @@ import threading
 from typing import Dict, List, Optional, Any, Set, Tuple
 from enum import Enum, auto
 
-import demon_ast as ast
-from tokens import Token, TokenType
-from interpreter import Interpreter, Environment
+from ..core import ast
+from ..core.tokens import Token, TokenType
+from ..core.interpreter import Interpreter, Environment
 
 class BreakpointType(Enum):
     """Types of breakpoints."""
@@ -415,8 +415,8 @@ class Debugger:
     def _evaluate_expression(self, expression: str) -> Any:
         """Evaluate an expression in the current context."""
         # Parse expression
-        from scanner import Scanner
-        from parser import Parser
+        from ..core.scanner import Scanner
+        from ..core.parser import Parser
         
         scanner = Scanner(expression, "<debugger>")
         tokens = scanner.scan_tokens()

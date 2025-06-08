@@ -5,8 +5,8 @@ This module converts Demon AST to bytecode instructions.
 
 from enum import Enum, auto
 from typing import List, Dict, Any, Optional, Union, Tuple
-import demon_ast as ast
-from tokens import Token, TokenType
+from . import ast
+from .tokens import Token, TokenType
 
 class OpCode(Enum):
     """Bytecode operation codes."""

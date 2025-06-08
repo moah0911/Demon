@@ -1,0 +1,75 @@
+// Advanced features test
+
+// 1. Nested function calls
+print("\n1. Nested function calls");
+func multiply(a, b) {
+    return a * b;
+}
+
+func square(x) {
+    return multiply(x, x);
+}
+
+print("square(4) =", square(4));
+
+// 2. Closures
+print("\n2. Closures");
+func makeCounter() {
+    let count = 0;
+    func counter() {
+        count = count + 1;
+        return count;
+    }
+    return counter;
+}
+
+let counter1 = makeCounter();
+print("counter1() =", counter1());
+print("counter1() =", counter1());
+print("counter1() =", counter1());
+
+// 3. Recursive functions
+print("\n3. Recursive functions");
+func factorial(n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+print("factorial(5) =", factorial(5));
+
+// 4. Higher-order functions
+print("\n4. Higher-order functions");
+func applyTwice(f, x) {
+    return f(f(x));
+}
+
+func addOne(x) {
+    return x + 1;
+}
+
+print("applyTwice(addOne, 5) =", applyTwice(addOne, 5));
+
+// 5. Classes and objects
+print("\n5. Classes and objects");
+class Point {
+    init(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    
+    distance() {
+        return sqrt(this.x * this.x + this.y * this.y);
+    }
+    
+    toString() {
+        return "Point(" + this.x + ", " + this.y + ")";
+    }
+}
+
+let p = Point(3, 4);
+print("p =", p.toString());
+print("Distance from origin =", p.distance());
+
+print("\nAdvanced tests completed!");

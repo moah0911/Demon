@@ -4,8 +4,8 @@ Interpreter for the Demon programming language.
 
 import time
 from typing import Dict, List, Any, Optional, Union, Tuple
-from tokens import Token, TokenType
-import demon_ast as ast
+from .tokens import Token, TokenType
+from . import ast
 
 class RuntimeError(Exception):
     """Runtime error in the Demon language."""
@@ -262,13 +262,14 @@ class Interpreter(ast.Visitor):
         self.globals = Environment()
         self.environment = self.globals
         self.locals = {}
+        self.NativeFunction = NativeFunction
         
         # Add native functions
         self.globals.define("clock", NativeFunction("clock", 0, lambda *args: time.time()))
         
         # Register standard library functions
         try:
-            from stdlib import DemonStdLib
+            from ..stdlib.stdlib import DemonStdLib
             DemonStdLib.register_all(self)
         except ImportError:
             # Fallback to basic functions if stdlib is not available
@@ -453,6 +454,10 @@ class Interpreter(ast.Visitor):
                 return left + right
             if isinstance(left, str) and isinstance(right, str):
                 return left + right
+            if isinstance(left, str) and isinstance(right, (int, float)):
+                return left + str(right)
+            if isinstance(left, (int, float)) and isinstance(right, str):
+                return str(left) + right
             raise RuntimeError(expr.operator, "Operands must be two numbers or two strings.")
         elif expr.operator.type == TokenType.PERCENT:
             self.check_number_operands(expr.operator, left, right)

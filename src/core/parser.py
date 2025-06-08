@@ -3,8 +3,8 @@ Parser for the Demon programming language.
 """
 
 from typing import List, Optional, Any, Dict, Tuple
-from tokens import Token, TokenType
-import demon_ast as ast
+from .tokens import Token, TokenType
+from . import ast
 
 class ParseError(Exception):
     """Exception raised during parsing."""
@@ -147,57 +147,54 @@ class Parser:
         """Parse a for statement."""
         self.consume(TokenType.LEFT_PAREN, "Expect '(' after 'for'.")
         
-        # Check for for-each style loop
+        # Check for for-each style loop with 'in' keyword
         if self.match(TokenType.LET):
-            # For-each loop
             var_name = self.consume(TokenType.IDENTIFIER, "Expect variable name.")
             
-            self.consume(TokenType.IN, "Expect 'in' after variable name in for-each loop.")
-            
-            iterable = self.expression()
-            
-            self.consume(TokenType.RIGHT_PAREN, "Expect ')' after for-each clauses.")
-            
-            body = self.statement()
-            
-            # Create a variable for the loop variable
-            variable = ast.Var(var_name, None)
-            
-            return ast.ForEach(variable, iterable, body)
-        else:
-            # C-style for loop
-            initializer = None
-            if self.match(TokenType.SEMICOLON):
-                initializer = None
-            elif self.match(TokenType.LET):
-                initializer = self.var_declaration(False)
+            if self.match(TokenType.IN):
+                # For-each loop
+                iterable = self.expression()
+                self.consume(TokenType.RIGHT_PAREN, "Expect ')' after for-each clauses.")
+                body = self.statement()
+                
+                # Create a variable for the loop variable
+                variable = ast.Var(var_name, None, False)
+                
+                return ast.ForEach(variable, iterable, body)
             else:
-                initializer = self.expression_statement()
-            
-            condition = None
-            if not self.check(TokenType.SEMICOLON):
-                condition = self.expression()
-            self.consume(TokenType.SEMICOLON, "Expect ';' after loop condition.")
-            
-            increment = None
-            if not self.check(TokenType.RIGHT_PAREN):
-                increment = self.expression()
-            self.consume(TokenType.RIGHT_PAREN, "Expect ')' after for clauses.")
-            
-            body = self.statement()
-            
-            # Desugar for loop into while loop
-            if increment is not None:
-                body = ast.Block([body, ast.Expression(increment)])
-            
-            if condition is None:
-                condition = ast.Literal(True)
-            body = ast.While(condition, body)
-            
-            if initializer is not None:
-                body = ast.Block([initializer, body])
-            
-            return body
+                # C-style for loop, continue with normal parsing
+                initializer = self.var_declaration(False)
+        elif self.match(TokenType.SEMICOLON):
+            initializer = None
+        else:
+            initializer = self.expression_statement()
+        
+        condition = None
+        if not self.check(TokenType.SEMICOLON):
+            condition = self.expression()
+        self.consume(TokenType.SEMICOLON, "Expect ';' after loop condition.")
+        
+        increment = None
+        if not self.check(TokenType.RIGHT_PAREN):
+            increment = self.expression()
+        self.consume(TokenType.RIGHT_PAREN, "Expect ')' after for clauses.")
+        
+        body = self.statement()
+        
+        # Create a block for the loop body that includes the increment
+        if increment is not None:
+            body = ast.Block([body, ast.Expression(increment)])
+        
+        # Create a while loop with the condition
+        if condition is None:
+            condition = ast.Literal(True)
+        body = ast.While(condition, body)
+        
+        # Create a block that includes the initializer and the loop
+        if initializer is not None:
+            body = ast.Block([initializer, body])
+        
+        return body
     
     def if_statement(self) -> ast.Stmt:
         """Parse an if statement."""
@@ -214,13 +211,21 @@ class Parser:
     
     def print_statement(self) -> ast.Stmt:
         """Parse a print statement."""
+        self.consume(TokenType.LEFT_PAREN, "Expect '(' after 'print'.")
+        
         expressions = []
         
-        expressions.append(self.expression())
-        while self.match(TokenType.COMMA):
+        if not self.check(TokenType.RIGHT_PAREN):
+            # Parse the first expression
             expressions.append(self.expression())
+            
+            # Parse additional expressions separated by commas
+            while self.match(TokenType.COMMA):
+                expressions.append(self.expression())
         
-        self.consume(TokenType.SEMICOLON, "Expect ';' after value.")
+        self.consume(TokenType.RIGHT_PAREN, "Expect ')' after arguments.")
+        self.consume(TokenType.SEMICOLON, "Expect ';' after print statement.")
+        
         return ast.Print(expressions)
     
     def return_statement(self) -> ast.Stmt:
