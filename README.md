@@ -36,7 +36,7 @@ print(greet("Demon"));
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/demon.git
+git clone https://github.com/moah0911/Demon.git
 cd demon
 
 # Run a Demon script
@@ -207,8 +207,3 @@ python run.py examples/advanced/all_algorithms_demo.demon
 ## License
 
 MIT License
-
-## Acknowledgments
-
-- Inspired by the book "Crafting Interpreters" by Robert Nystrom
-- Thanks to all contributors who have helped shape Demon
