@@ -1,56 +1,46 @@
-# Demon Programming Language Examples
+# Demon Examples
 
-This directory contains example programs written in the Demon programming language to demonstrate its features and capabilities.
+This directory contains example programs written in the Demon programming language.
 
 ## Basic Examples
 
-- **hello.demon**: Basic "Hello World" program demonstrating core language features including variables, functions, conditionals, loops, and lists.
-- **calculator.demon**: A simple calculator implementation showing arithmetic operations and user input.
-- **factorial.demon**: Demonstrates recursive function calls by calculating factorials.
-- **fibonacci.demon**: Shows how to generate Fibonacci sequences using loops and recursion.
+- `hello.demon` - Simple "Hello, World!" program
+- `calculator.demon` - Basic calculator implementation
+- `factorial.demon` - Factorial calculation
+- `fibonacci.demon` - Fibonacci sequence generation
 
-## Testing Examples
+## Advanced Examples
 
-- **test_expressions.demon**: Tests various expression types and operators in the language.
-- **test_bytecode.demon**: Demonstrates the bytecode compilation and virtual machine execution.
-- **test_type_checker.demon**: Shows the optional static type checking functionality.
+### Data Structures
 
-## Advanced Features
+- `pq_demo.demon` - Priority Queue demonstration
+- `ht_demo.demon` - Hash Table demonstration
+- `bst_demo.demon` - Binary Search Tree demonstration
+- `trie_demo.demon` - Trie demonstration
+- `graph_api_demo.demon` - Graph API demonstration
 
-- **object_demo.demon**: Comprehensive demonstration of object-oriented programming features including property access, nested objects, method chaining, and factory functions.
-- **stdlib_demo.demon**: Shows the standard library functions including math operations, string manipulation, list operations, and data structures.
+### Algorithms
 
-## Development Tools
+- `sort_demo.demon` - Sorting algorithms demonstration
 
-- **debug_test.demon**: Example program for testing the debugger functionality.
-- **ide_test.demon**: Example for testing IDE integration features.
+### Comprehensive Demos
 
-## Naming Convention
-
-Files in this directory follow these naming conventions:
-
-1. Feature demonstration files are named after the feature they demonstrate (e.g., `calculator.demon`, `fibonacci.demon`).
-2. Test files are prefixed with `test_` (e.g., `test_expressions.demon`).
-3. Files with similar content but different complexity levels use suffixes:
-   - No suffix: Standard implementation (e.g., `stdlib_demo.demon`)
-   - `_enhanced`: Extended version with more features (e.g., `stdlib_demo_enhanced.demon`)
+- `all_algorithms_demo.demon` - Comprehensive demonstration of all data structures and algorithms
+- `combined_demo.demon` - Combined demonstration of multiple data structures
 
 ## Running Examples
 
 To run any example:
 
 ```bash
-python src/demon_cli.py examples/hello.demon
+python run.py examples/basic/hello.demon
+python run.py examples/advanced/all_algorithms_demo.demon
 ```
 
-With type checking enabled:
+## Notes
 
-```bash
-python src/demon_cli.py --type-check examples/test_type_checker.demon
-```
+1. When using data structures, avoid variable names like `bst` or `graph` as they may conflict with language keywords.
 
-Using the bytecode VM:
+2. Use appropriate variable names like `tree_id` for binary search trees and `g_id` for graphs.
 
-```bash
-python src/demon_cli.py --bytecode examples/test_bytecode.demon
-```
+3. All data structures return an ID that must be used in subsequent operations.

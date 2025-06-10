@@ -1,0 +1,24 @@
+// Sorting Algorithms Demo
+
+print("Sorting Algorithms Demo");
+
+// Create an unsorted array
+let unsorted = [5, 3, 8, 1, 2];
+print("Original array:", unsorted);
+
+// Built-in sort
+print("\nBuilt-in sort:", sort(unsorted));
+
+// Quick sort
+print("Quick sort:", quick_sort(unsorted));
+
+// Merge sort
+print("Merge sort:", merge_sort(unsorted));
+
+// Binary search
+let sorted = sort(unsorted);
+print("\nBinary search in sorted array [1, 2, 3, 5, 8]:");
+print("Find 3:", binary_search(sorted, 3));
+print("Find 6:", binary_search(sorted, 6));
+
+print("\nDemo completed!");

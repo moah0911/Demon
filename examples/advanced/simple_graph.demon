@@ -1,0 +1,69 @@
+// Simple Graph Demo
+
+print("Simple Graph Demo");
+
+// Create a simple graph using arrays
+let nodes = ["A", "B", "C", "D"];
+
+// Create adjacency matrix
+let adj_matrix = [
+    [0, 1, 4, 0],  // A's connections
+    [1, 0, 2, 5],  // B's connections
+    [4, 2, 0, 1],  // C's connections
+    [0, 5, 1, 0]   // D's connections
+];
+
+print("\nNodes:", nodes);
+print("Adjacency Matrix:");
+for (let i = 0; i < len(adj_matrix); i = i + 1) {
+    print(adj_matrix[i]);
+}
+
+// Find shortest path from A to D (index 0 to 3)
+func find_shortest_path(matrix, start, end) {
+    let n = len(matrix);
+    let distances = [];
+    let visited = [];
+    
+    // Initialize distances and visited arrays
+    for (let i = 0; i < n; i = i + 1) {
+        distances.append(999999);  // Infinity
+        visited.append(false);
+    }
+    distances[start] = 0;
+    
+    // Find shortest path
+    for (let i = 0; i < n; i = i + 1) {
+        // Find minimum distance vertex
+        let min_dist = 999999;
+        let min_idx = -1;
+        
+        for (let j = 0; j < n; j = j + 1) {
+            if (visited[j] == false and distances[j] < min_dist) {
+                min_dist = distances[j];
+                min_idx = j;
+            }
+        }
+        
+        if (min_idx == -1) {
+            break;
+        }
+        
+        // Mark as visited
+        visited[min_idx] = true;
+        
+        // Update distances
+        for (let j = 0; j < n; j = j + 1) {
+            if (!visited[j] and matrix[min_idx][j] > 0 and 
+                distances[min_idx] + matrix[min_idx][j] < distances[j]) {
+                distances[j] = distances[min_idx] + matrix[min_idx][j];
+            }
+        }
+    }
+    
+    return distances[end];
+}
+
+print("\nShortest path from A to D:", find_shortest_path(adj_matrix, 0, 3));
+
+print("\nDemo completed!");

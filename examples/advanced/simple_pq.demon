@@ -1,0 +1,20 @@
+// Minimal Priority Queue Test
+
+print("Minimal Priority Queue Test");
+
+// Create a priority queue
+let pq = PriorityQueue();
+
+// Test if the object was created
+print("Priority Queue created:", pq);
+
+// Try to access a method directly
+print("Is empty method:", pq.is_empty);
+
+// Try to add items
+print("Adding items...");
+pq.push("Task 1", 3);
+pq.push("Task 2", 1);
+pq.push("Task 3", 2);
+
+print("Test completed!");

@@ -1,0 +1,25 @@
+// Simple test with basic functionality
+
+print("Simple Test");
+
+// Test basic variables and arithmetic
+let x = 10;
+let y = 20;
+print("x + y =", x + y);
+
+// Test basic function
+func add(a, b) {
+    return a + b;
+}
+print("add(5, 3) =", add(5, 3));
+
+// Test arrays
+let arr = [1, 2, 3, 4, 5];
+print("Array:", arr);
+print("Array length:", arr.length);
+
+// Test simple sorting
+print("Original array:", arr);
+print("Sorted array:", sort(arr));
+
+print("Test completed!");

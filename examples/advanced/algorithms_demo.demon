@@ -1,0 +1,40 @@
+// Demon Algorithms Demo
+
+print("Demon Algorithms Demo");
+
+// 1. Sorting Algorithms
+print("\n1. Sorting Algorithms");
+let unsorted = [5, 3, 8, 1, 2];
+print("Original array:", unsorted);
+print("Quick sort:", quick_sort(unsorted));
+print("Merge sort:", merge_sort(unsorted));
+print("Heap sort:", heap_sort(unsorted));
+print("Insertion sort:", insertion_sort(unsorted));
+
+// 2. Search Algorithms
+print("\n2. Search Algorithms");
+let array = [1, 2, 3, 4, 5];
+print("Array:", array);
+print("Binary search for 3:", binary_search(array, 3));
+print("Binary search for 6:", binary_search(array, 6));
+print("Linear search for 4:", linear_search(array, 4));
+
+// 3. String Algorithms
+print("\n3. String Algorithms");
+let s1 = "kitten";
+let s2 = "sitting";
+print("Levenshtein distance between", s1, "and", s2, ":", levenshtein_distance(s1, s2));
+
+let text = "abababa";
+let pattern = "aba";
+print("KMP search for", pattern, "in", text, ":", kmp_search(text, pattern));
+
+// 4. Numerical Algorithms
+print("\n4. Numerical Algorithms");
+print("GCD of 48 and 18:", gcd(48, 18));
+print("LCM of 12 and 18:", lcm(12, 18));
+print("Is 17 prime?", is_prime(17));
+print("Is 15 prime?", is_prime(15));
+print("Prime numbers up to 20:", sieve_of_eratosthenes(20));
+
+print("\nAlgorithms Demo Completed!");

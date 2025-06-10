@@ -3,6 +3,8 @@ Interpreter for the Demon programming language.
 """
 
 import time
+import sys
+import os
 from typing import Dict, List, Any, Optional, Union, Tuple
 from .tokens import Token, TokenType
 from . import ast
@@ -269,12 +271,18 @@ class Interpreter(ast.Visitor):
         
         # Register standard library functions
         try:
-            from ..stdlib.stdlib import DemonStdLib
+            # Add the project root to the Python path
+            project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            if project_root not in sys.path:
+                sys.path.insert(0, project_root)
+            
+            from src.stdlib.stdlib import DemonStdLib
             DemonStdLib.register_all(self)
-        except ImportError:
+        except ImportError as e:
+            print(f"Error importing standard library: {e}")
             # Fallback to basic functions if stdlib is not available
             self.globals.define("print", NativeFunction("print", -1, lambda *args: print(*args)))
-            self.globals.define("input", NativeFunction("input", 1, lambda prompt: input(prompt)))
+            self.globals.define("input", NativeFunction("input", 1, lambda prompt="": input(prompt)))
             self.globals.define("len", NativeFunction("len", 1, lambda obj: len(obj)))
     
     def interpret(self, statements: List[ast.Stmt]):
@@ -543,6 +551,13 @@ class Interpreter(ast.Visitor):
                     return lambda sep=" ": obj.split(sep)
                 elif expr.name.lexeme == "replace":
                     return lambda old, new: obj.replace(old, new)
+        
+        # Check if the object has the method as an attribute
+        if hasattr(obj, expr.name.lexeme):
+            attr = getattr(obj, expr.name.lexeme)
+            if callable(attr):
+                return attr
+            return attr
         
         raise RuntimeError(expr.name, "Only instances have properties.")
     

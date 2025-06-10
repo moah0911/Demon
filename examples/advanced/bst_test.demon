@@ -1,0 +1,18 @@
+// BST Test
+
+print("BST Test");
+
+// Create a BST
+let tree = bst_create();
+print("Tree created:", tree);
+
+// Insert a value
+print("Inserting value 5");
+let result = bst_insert(tree, 5);
+print("Insert result:", result);
+
+// Search for a value
+print("Searching for 5:", bst_search(tree, 5));
+print("Searching for 10:", bst_search(tree, 10));
+
+print("Test completed!");

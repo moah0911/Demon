@@ -1,5 +1,3 @@
 """
-Standard library for the Demon programming language.
+Standard library package for the Demon programming language.
 """
-
-from .stdlib import DemonStdLib

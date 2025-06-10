@@ -1,0 +1,16 @@
+// Minimal test with built-in functions
+
+print("Minimal Test");
+
+// Test built-in functions
+let arr = [5, 3, 8, 1, 2];
+print("Original array:", arr);
+print("Sorted array:", sort(arr));
+
+// Test quick_sort function
+print("Quick sort:", quick_sort(arr));
+
+// Test merge_sort function
+print("Merge sort:", merge_sort(arr));
+
+print("Test completed!");
