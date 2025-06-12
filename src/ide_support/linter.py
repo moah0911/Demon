@@ -3,6 +3,9 @@ Code linter for the Demon programming language.
 """
 
 import re
+import os
+import sys
+import logging
 from typing import Dict, List, Optional, Any, Union, Tuple
 
 class CodeLinter:
@@ -25,38 +28,62 @@ class CodeLinter:
     
     def type_check(self, uri: str, text: str) -> List[Dict[str, Any]]:
         """Type check the document and return diagnostics."""
-        # Parse the document
-        from scanner import Scanner
-        from parser import Parser
-        from type_checker import TypeChecker
-        
-        scanner = Scanner(text, uri)
-        tokens = scanner.scan_tokens()
-        
-        parser = Parser(tokens, self.language_server.demon)
-        statements = parser.parse()
-        
-        if not statements:
-            return []
-        
-        # Type check
-        type_checker = TypeChecker(self.language_server.demon)
-        errors = type_checker.check(statements)
-        
-        # Convert errors to diagnostics
-        diagnostics = []
-        for error in errors:
-            diagnostics.append({
+        try:
+            # Import from correct paths
+            sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            from core.tokens import Scanner
+            from core.parser import Parser
+            from core.type_checker import TypeChecker
+            
+            scanner = Scanner(text, uri)
+            tokens = scanner.scan_tokens()
+            
+            parser = Parser(tokens, self.language_server.demon)
+            statements = parser.parse()
+            
+            if not statements:
+                return []
+            
+            # Type check
+            type_checker = TypeChecker(self.language_server.demon)
+            errors = type_checker.check(statements)
+            
+            # Convert errors to diagnostics
+            diagnostics = []
+            for error in errors:
+                diagnostics.append({
+                    "range": {
+                        "start": {"line": error.token.line - 1, "character": 0},
+                        "end": {"line": error.token.line - 1, "character": 80}
+                    },
+                    "severity": 1,  # Error
+                    "source": "demon-type-checker",
+                    "message": error.message
+                })
+            
+            return diagnostics
+        except ImportError as e:
+            logging.error(f"Import error in type checker: {e}")
+            return [{
                 "range": {
-                    "start": {"line": error.token.line - 1, "character": 0},
-                    "end": {"line": error.token.line - 1, "character": 80}
+                    "start": {"line": 0, "character": 0},
+                    "end": {"line": 0, "character": 1}
                 },
                 "severity": 1,  # Error
                 "source": "demon-type-checker",
-                "message": error.message
-            })
-        
-        return diagnostics
+                "message": f"Type checker error: {str(e)}"
+            }]
+        except Exception as e:
+            logging.error(f"Error in type checker: {e}")
+            return [{
+                "range": {
+                    "start": {"line": 0, "character": 0},
+                    "end": {"line": 0, "character": 1}
+                },
+                "severity": 1,  # Error
+                "source": "demon-type-checker",
+                "message": f"Type checker error: {str(e)}"
+            }]
     
     def _check_syntax(self, uri: str, text: str) -> List[Dict[str, Any]]:
         """Check for syntax errors."""

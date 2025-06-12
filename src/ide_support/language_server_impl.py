@@ -18,6 +18,7 @@ class DemonLanguageServer:
         self.workspace_folders = []
         self.open_documents = {}
         self.client_capabilities = {}
+        self.client_writer = None
         self.server_capabilities = {
             "textDocumentSync": {
                 "openClose": True,
@@ -112,6 +113,9 @@ class DemonLanguageServer:
     def handle_client(self, rfile, wfile):
         """Handle client connection."""
         logging.info("Client connected")
+        
+        # Store writer for publishing diagnostics
+        self.client_writer = wfile
         
         while self.running:
             try:
@@ -557,7 +561,19 @@ class DemonLanguageServer:
             }
         }
         
-        # TODO: Send notification to client
+        # Convert notification to JSON and send to client
+        notification_str = json.dumps(notification)
+        header = f"Content-Length: {len(notification_str)}\r\n\r\n"
+        
+        try:
+            # This is a critical fix - we need to actually send the diagnostics
+            # to the client, not just create the notification
+            if hasattr(self, 'client_writer'):
+                self.client_writer.write(header.encode('utf-8'))
+                self.client_writer.write(notification_str.encode('utf-8'))
+                self.client_writer.flush()
+        except Exception as e:
+            logging.error(f"Error publishing diagnostics: {e}")
     
     def create_response(self, id, result):
         """Create a response message."""

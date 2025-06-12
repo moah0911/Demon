@@ -478,8 +478,224 @@ class DemonStdLib:
             
             interpreter.globals.define("binary_search", NativeFunction("binary_search", 2, binary_search))
             
+            # Advanced algorithms
+            
+            # Fibonacci with memoization
+            def fibonacci_memo(n):
+                memo = {}
+                
+                def fib(n):
+                    if n in memo:
+                        return memo[n]
+                    if n <= 1:
+                        return n
+                    memo[n] = fib(n-1) + fib(n-2)
+                    return memo[n]
+                
+                return fib(n)
+            
+            # Longest Common Subsequence
+            def lcs(str1, str2):
+                m, n = len(str1), len(str2)
+                dp = [[0] * (n + 1) for _ in range(m + 1)]
+                
+                for i in range(1, m + 1):
+                    for j in range(1, n + 1):
+                        if str1[i-1] == str2[j-1]:
+                            dp[i][j] = dp[i-1][j-1] + 1
+                        else:
+                            dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+                
+                # Reconstruct the LCS
+                i, j = m, n
+                lcs_result = []
+                
+                while i > 0 and j > 0:
+                    if str1[i-1] == str2[j-1]:
+                        lcs_result.append(str1[i-1])
+                        i -= 1
+                        j -= 1
+                    elif dp[i-1][j] > dp[i][j-1]:
+                        i -= 1
+                    else:
+                        j -= 1
+                
+                return ''.join(reversed(lcs_result))
+            
+            # Knapsack problem
+            def knapsack(weights, values, capacity):
+                n = len(weights)
+                dp = [[0] * (capacity + 1) for _ in range(n + 1)]
+                
+                for i in range(1, n + 1):
+                    for w in range(capacity + 1):
+                        if weights[i-1] <= w:
+                            dp[i][w] = max(values[i-1] + dp[i-1][w-weights[i-1]], dp[i-1][w])
+                        else:
+                            dp[i][w] = dp[i-1][w]
+                
+                # Reconstruct the solution
+                w = capacity
+                selected_items = []
+                
+                for i in range(n, 0, -1):
+                    if dp[i][w] != dp[i-1][w]:
+                        selected_items.append(i-1)
+                        w -= weights[i-1]
+                
+                return dp[n][capacity], selected_items
+            
+            # Edit Distance (Levenshtein)
+            def edit_distance(str1, str2):
+                m, n = len(str1), len(str2)
+                dp = [[0] * (n + 1) for _ in range(m + 1)]
+                
+                for i in range(m + 1):
+                    dp[i][0] = i
+                for j in range(n + 1):
+                    dp[0][j] = j
+                
+                for i in range(1, m + 1):
+                    for j in range(1, n + 1):
+                        if str1[i-1] == str2[j-1]:
+                            dp[i][j] = dp[i-1][j-1]
+                        else:
+                            dp[i][j] = 1 + min(dp[i-1][j],      # Delete
+                                            dp[i][j-1],      # Insert
+                                            dp[i-1][j-1])    # Replace
+                
+                return dp[m][n]
+            
+            # Advanced data structures
+            
+            # Heap implementation
+            _heaps = {}
+            _heap_counter = [0]
+            
+            def heap_create(min_heap=True):
+                """Create a new heap (min-heap by default)."""
+                heap_id = str(_heap_counter[0])
+                _heap_counter[0] += 1
+                _heaps[heap_id] = {"data": [], "min_heap": min_heap}
+                return heap_id
+            
+            def heap_push(heap_id, value):
+                """Push a value onto the heap."""
+                heap = _heaps[heap_id]
+                # For max heap, negate the value to use Python's min-heap
+                if not heap["min_heap"]:
+                    value = -value
+                heapq.heappush(heap["data"], value)
+                return heap_id
+            
+            def heap_pop(heap_id):
+                """Pop the smallest (or largest) value from the heap."""
+                heap = _heaps[heap_id]
+                if not heap["data"]:
+                    return None
+                value = heapq.heappop(heap["data"])
+                # For max heap, negate the value back
+                if not heap["min_heap"]:
+                    value = -value
+                return value
+            
+            def heap_peek(heap_id):
+                """Peek at the top value without removing it."""
+                heap = _heaps[heap_id]
+                if not heap["data"]:
+                    return None
+                value = heap["data"][0]
+                # For max heap, negate the value back
+                if not heap["min_heap"]:
+                    value = -value
+                return value
+            
+            def heap_size(heap_id):
+                """Get the number of elements in the heap."""
+                return len(_heaps[heap_id]["data"])
+            
+            def heap_is_empty(heap_id):
+                """Check if the heap is empty."""
+                return len(_heaps[heap_id]["data"]) == 0
+            
+            # LRU Cache implementation
+            _lru_caches = {}
+            _lru_counter = [0]
+            
+            def lru_create(capacity):
+                """Create a new LRU cache with the given capacity."""
+                lru_id = str(_lru_counter[0])
+                _lru_counter[0] += 1
+                _lru_caches[lru_id] = {"cache": OrderedDict(), "capacity": capacity}
+                return lru_id
+            
+            def lru_get(lru_id, key):
+                """Get a value from the LRU cache."""
+                cache = _lru_caches[lru_id]["cache"]
+                if key not in cache:
+                    return None
+                # Move to end to show it was recently used
+                value = cache.pop(key)
+                cache[key] = value
+                return value
+            
+            def lru_put(lru_id, key, value):
+                """Put a value in the LRU cache."""
+                cache_data = _lru_caches[lru_id]
+                cache = cache_data["cache"]
+                capacity = cache_data["capacity"]
+                
+                # If key exists, update its value and move to end
+                if key in cache:
+                    cache.pop(key)
+                # If at capacity, remove the least recently used item (first item)
+                elif len(cache) >= capacity:
+                    cache.popitem(last=False)
+                
+                cache[key] = value
+                return lru_id
+            
+            def lru_contains(lru_id, key):
+                """Check if a key exists in the LRU cache."""
+                return key in _lru_caches[lru_id]["cache"]
+            
+            def lru_size(lru_id):
+                """Get the current size of the LRU cache."""
+                return len(_lru_caches[lru_id]["cache"])
+            
+            def lru_capacity(lru_id):
+                """Get the capacity of the LRU cache."""
+                return _lru_caches[lru_id]["capacity"]
+            
+            def lru_clear(lru_id):
+                """Clear all items from the LRU cache."""
+                _lru_caches[lru_id]["cache"].clear()
+                return lru_id
+            
+            # Register advanced algorithms
+            interpreter.globals.define("fibonacci_memo", NativeFunction("fibonacci_memo", 1, fibonacci_memo))
+            interpreter.globals.define("lcs", NativeFunction("lcs", 2, lcs))
+            interpreter.globals.define("knapsack", NativeFunction("knapsack", 3, knapsack))
+            interpreter.globals.define("edit_distance", NativeFunction("edit_distance", 2, edit_distance))
+            
+            # Register advanced data structures
+            interpreter.globals.define("heap_create", NativeFunction("heap_create", 1, heap_create))
+            interpreter.globals.define("heap_push", NativeFunction("heap_push", 2, heap_push))
+            interpreter.globals.define("heap_pop", NativeFunction("heap_pop", 1, heap_pop))
+            interpreter.globals.define("heap_peek", NativeFunction("heap_peek", 1, heap_peek))
+            interpreter.globals.define("heap_size", NativeFunction("heap_size", 1, heap_size))
+            interpreter.globals.define("heap_is_empty", NativeFunction("heap_is_empty", 1, heap_is_empty))
+            
+            interpreter.globals.define("lru_create", NativeFunction("lru_create", 1, lru_create))
+            interpreter.globals.define("lru_get", NativeFunction("lru_get", 2, lru_get))
+            interpreter.globals.define("lru_put", NativeFunction("lru_put", 3, lru_put))
+            interpreter.globals.define("lru_contains", NativeFunction("lru_contains", 2, lru_contains))
+            interpreter.globals.define("lru_size", NativeFunction("lru_size", 1, lru_size))
+            interpreter.globals.define("lru_capacity", NativeFunction("lru_capacity", 1, lru_capacity))
+            interpreter.globals.define("lru_clear", NativeFunction("lru_clear", 1, lru_clear))
+            
         except Exception as e:
-            print(f"Error registering data structures: {e}")
+            print(f"Error registering extensions: {e}")
     
     @staticmethod
     def _reduce(interpreter, fn, lst, init):

@@ -2,12 +2,12 @@
 
 <div align="center">
   <img src="https://via.placeholder.com/200x200?text=Demon" alt="Demon Logo" width="200" height="200">
-  <h3>A modern, expressive programming language</h3>
+  <h3>A modern, expressive programming language with built-in data structures and algorithms</h3>
 </div>
 
 ## Overview
 
-Demon is a dynamic programming language designed for clarity, expressiveness, and ease of use. It combines the best features of modern languages with a clean syntax and powerful abstractions.
+Demon is a dynamic programming language designed for clarity, expressiveness, and ease of use. It combines the best features of modern languages with a clean syntax and powerful abstractions, with a special focus on built-in data structures and algorithms.
 
 ```demon
 // Hello World in Demon
@@ -27,20 +27,26 @@ print(greet("Demon"));
 - **First-class Functions** - Functions as values, closures, and higher-order functions
 - **Dynamic Typing** - Flexible type system with runtime type checking
 - **Object-Oriented** - Classes, inheritance, and methods
-- **Data Structures** - Lists, maps, and more
+- **Rich Data Structures** - Priority queues, hash tables, BSTs, tries, heaps, and more
+- **Built-in Algorithms** - Sorting, searching, graph algorithms, and dynamic programming
 - **Control Flow** - If/else, while loops, and blocks
 - **Error Handling** - Graceful error handling patterns
-- **Built-in DSA** - Common data structures and algorithms included
+- **IDE Support** - Syntax highlighting, code completion, and error checking
 
 ## Installation
 
 ```bash
 # Clone the repository
 git clone https://github.com/moah0911/Demon.git
-cd demon
+cd Demon
 
 # Run a Demon script
-python run.py examples/basic/hello_fixed.demon
+python run.py examples/basic/hello.demon
+
+# Set up IDE support
+cd src/ide_support
+chmod +x install.sh
+./install.sh
 ```
 
 ## Language Examples
@@ -126,11 +132,11 @@ print(p.toString());         // Outputs: Point(3, 4)
 print(p.distance());         // Outputs: 5.0
 ```
 
-## Built-in Data Structures and Algorithms
+## Built-in Data Structures
 
-Demon comes with a rich set of built-in data structures and algorithms:
+Demon comes with a rich set of built-in data structures:
 
-### Data Structures
+### Basic Data Structures
 
 ```demon
 // Priority Queue
@@ -159,7 +165,31 @@ print(trie_search(trie_id, "apple"));  // Outputs: true
 print(trie_starts_with(trie_id, "app"));  // Outputs: true
 ```
 
-### Algorithms
+### Advanced Data Structures
+
+```demon
+// Min Heap
+let min_heap_id = heap_create(true);
+heap_push(min_heap_id, 5);
+heap_push(min_heap_id, 3);
+print(heap_pop(min_heap_id));  // Outputs: 3
+
+// Max Heap
+let max_heap_id = heap_create(false);
+heap_push(max_heap_id, 5);
+heap_push(max_heap_id, 10);
+print(heap_pop(max_heap_id));  // Outputs: 10
+
+// LRU Cache
+let cache_id = lru_create(3);
+lru_put(cache_id, "key1", "value1");
+lru_put(cache_id, "key2", "value2");
+print(lru_get(cache_id, "key1"));  // Outputs: "value1"
+```
+
+## Built-in Algorithms
+
+### Sorting and Searching
 
 ```demon
 // Sorting
@@ -170,39 +200,90 @@ print(merge_sort(unsorted));  // Outputs: [1, 2, 3, 5, 8]
 // Searching
 let array = [1, 2, 3, 4, 5];
 print(binary_search(array, 3));  // Outputs: 2 (index)
+```
 
-// Graph Algorithms
+### Graph Algorithms
+
+```demon
 let g_id = graph_create();
 graph_add_node(g_id, "A");
 graph_add_node(g_id, "B");
+graph_add_node(g_id, "C");
 graph_add_edge(g_id, "A", "B", 1);
-print(graph_shortest_path(g_id, "A"));  // Outputs: {"A": 0, "B": 1}
-print(graph_dfs(g_id, "A"));  // Outputs: ["A", "B"]
+graph_add_edge(g_id, "B", "C", 2);
+
+// Shortest path (Dijkstra's algorithm)
+print(graph_shortest_path(g_id, "A"));  // Outputs: {"A": 0, "B": 1, "C": 3}
+
+// Depth-first search
+print(graph_dfs(g_id, "A"));  // Outputs: ["A", "B", "C"]
 ```
 
-### Functional Utilities
+### Dynamic Programming
 
 ```demon
-// Map, Filter, Reduce
-let nums = [1, 2, 3, 4, 5];
-print(map(func(x) { return x * 2; }, nums));  // Outputs: [2, 4, 6, 8, 10]
-print(filter(func(x) { return x % 2 == 0; }, nums));  // Outputs: [2, 4]
-print(reduce(func(acc, x) { return acc + x; }, nums, 0));  // Outputs: 15
+// Fibonacci with memoization
+print(fibonacci_memo(30));  // Fast calculation with memoization
+
+// Longest Common Subsequence
+print(lcs("ABCDGH", "AEDFHR"));  // Outputs: "ADH"
+
+// Edit Distance
+print(edit_distance("kitten", "sitting"));  // Outputs: 3
 ```
 
-## Running the REPL
+## Current Limitations
+
+- **For Loops**: Currently, Demon only supports while loops. For loops are not yet implemented.
+- **Array Access in Type Checker**: The type checker doesn't fully support array literals and array access operations.
+- **Bytecode Compilation**: The bytecode compiler is still under development and doesn't support all language features.
+- **Logical Operators**: Use `and`, `or`, and `not` instead of `&&`, `||`, and `!`.
+
+## IDE Support
+
+Demon includes IDE support with the following features:
+- Syntax highlighting
+- Code completion
+- Error checking
+- Code formatting
+- Navigation to definitions
+
+To install IDE support:
+```bash
+cd src/ide_support
+chmod +x install.sh
+./install.sh
+```
+
+## Running the Tests
 
 ```bash
-python run.py
+# Run all tests
+python run.py examples/testing/test_expressions.demon
+python run.py examples/testing/debug_test.demon
+python run.py examples/testing/ide_test.demon
+python run.py examples/testing/test_type_checker.demon --type-check
+
+# Run the complete demo
+python run.py examples/advanced/complete_demo.demon
 ```
 
-## Running the Demo
+## Project Structure
 
-To see all data structures and algorithms in action:
+- **src/**: Core implementation of the language
+  - **core/**: Core language components (parser, interpreter, VM)
+  - **stdlib/**: Standard library implementations
+  - **ide_support/**: IDE integration tools
+  - **tools/**: Development tools (CLI, debugger, package manager)
+- **examples/**: Example Demon programs
+  - **basic/**: Simple examples for beginners
+  - **advanced/**: Complex examples showcasing advanced features
+  - **testing/**: Test cases for the language implementation
+- **docs/**: Documentation for various aspects of the language
 
-```bash
-python run.py examples/advanced/all_algorithms_demo.demon
-```
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to the Demon programming language.
 
 ## License
 

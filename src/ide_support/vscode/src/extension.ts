@@ -58,16 +58,16 @@ function startLanguageServer(context: vscode.ExtensionContext) {
     const serverOptions: ServerOptions = {
         run: {
             command: 'python',
-            args: [path.join(__dirname, '..', '..', '..', 'demon_cli.py'), '--ide'],
+            args: [path.join(__dirname, '..', '..', '..', '..', 'src', 'demon_cli.py'), '--ide'],
             options: {
-                cwd: path.join(__dirname, '..', '..', '..')
+                cwd: path.join(__dirname, '..', '..', '..', '..')
             }
         },
         debug: {
             command: 'python',
-            args: [path.join(__dirname, '..', '..', '..', 'demon_cli.py'), '--ide', '--debug'],
+            args: [path.join(__dirname, '..', '..', '..', '..', 'src', 'demon_cli.py'), '--ide', '--debug'],
             options: {
-                cwd: path.join(__dirname, '..', '..', '..')
+                cwd: path.join(__dirname, '..', '..', '..', '..')
             }
         }
     };

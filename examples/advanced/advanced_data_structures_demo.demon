@@ -1,0 +1,62 @@
+// Advanced Data Structures Demo
+
+print("Advanced Data Structures Demo");
+
+// 1. Heap (Min Heap)
+print("\n1. Min Heap");
+let min_heap_id = heap_create(true);
+heap_push(min_heap_id, 5);
+heap_push(min_heap_id, 3);
+heap_push(min_heap_id, 8);
+heap_push(min_heap_id, 1);
+heap_push(min_heap_id, 10);
+
+print("Heap size:", heap_size(min_heap_id));
+print("Peek at top element:", heap_peek(min_heap_id));
+print("Extracting elements in order:");
+while (!heap_is_empty(min_heap_id)) {
+    print(heap_pop(min_heap_id));
+}
+
+// 2. Heap (Max Heap)
+print("\n2. Max Heap");
+let max_heap_id = heap_create(false);
+heap_push(max_heap_id, 5);
+heap_push(max_heap_id, 3);
+heap_push(max_heap_id, 8);
+heap_push(max_heap_id, 1);
+heap_push(max_heap_id, 10);
+
+print("Heap size:", heap_size(max_heap_id));
+print("Peek at top element:", heap_peek(max_heap_id));
+print("Extracting elements in order:");
+while (!heap_is_empty(max_heap_id)) {
+    print(heap_pop(max_heap_id));
+}
+
+// 3. LRU Cache
+print("\n3. LRU Cache");
+let cache_id = lru_create(3);  // Cache with capacity 3
+lru_put(cache_id, "key1", "value1");
+lru_put(cache_id, "key2", "value2");
+lru_put(cache_id, "key3", "value3");
+
+print("Cache size:", lru_size(cache_id));
+print("Cache capacity:", lru_capacity(cache_id));
+print("Get key1:", lru_get(cache_id, "key1"));
+print("Contains key2:", lru_contains(cache_id, "key2"));
+
+// Add a new item, which should evict the least recently used item (key2)
+lru_put(cache_id, "key4", "value4");
+print("\nAfter adding key4:");
+print("Contains key1:", lru_contains(cache_id, "key1"));  // true (recently accessed)
+print("Contains key2:", lru_contains(cache_id, "key2"));  // false (evicted)
+print("Contains key3:", lru_contains(cache_id, "key3"));  // true
+print("Contains key4:", lru_contains(cache_id, "key4"));  // true (newly added)
+
+// Clear the cache
+lru_clear(cache_id);
+print("\nAfter clearing cache:");
+print("Cache size:", lru_size(cache_id));
+
+print("\nAdvanced Data Structures Demo Completed!");

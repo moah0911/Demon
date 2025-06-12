@@ -28,9 +28,11 @@ let b = "hello";
 let c = [1, 2, 3, 4, 5];
 
 // Loop to set breakpoints
-for (let i = 0; i < 5; i = i + 1) {
+let i = 0;
+while (i < 5) {
     print("Loop iteration:", i);
     a = a + i;
+    i = i + 1;
 }
 
 // Calculate factorial
