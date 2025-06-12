@@ -1,9 +1,7 @@
 # Demon Programming Language
 
-<div align="center">
-  ![The Letter D with Ho](https://github.com/user-attachments/assets/f4ad8230-696c-4b1a-8c63-5b4016d23ffd)
-      <h3>A modern, expressive programming language with built-in data structures and algorithms</h3>
-</div>
+![The Letter D with Ho](https://github.com/user-attachments/assets/4f3946f0-9607-445f-98a1-51a656249503)
+
 
 ## Overview
 Demon is a dynamic programming language designed for clarity, expressiveness, and ease of use. It combines the best features of modern languages with a clean syntax and powerful abstractions, with a special focus on built-in data structures and algorithms.
