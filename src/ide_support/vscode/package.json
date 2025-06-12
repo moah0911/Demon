@@ -3,6 +3,7 @@
   "displayName": "Demon Programming Language",
   "description": "Language support for the Demon programming language",
   "version": "1.0.0",
+  "icon": "../../../Demon.png",
   "engines": {
     "vscode": "^1.60.0"
   },
