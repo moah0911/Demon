@@ -1,8 +1,8 @@
 # Demon Programming Language
 
 <div align="center">
-  <img src="https://via.placeholder.com/200x200?text=Demon" alt="Demon Logo" width="200" height="200">
-  <h3>A modern, expressive programming language with built-in data structures and algorithms</h3>
+  ![The Letter D with Ho](https://github.com/user-attachments/assets/f4ad8230-696c-4b1a-8c63-5b4016d23ffd)
+      <h3>A modern, expressive programming language with built-in data structures and algorithms</h3>
 </div>
 
 ## Overview
