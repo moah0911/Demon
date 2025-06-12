@@ -1,12 +1,11 @@
 # Demon Programming Language
 
 <div align="center">
-  <img src="./Demon.png" alt="Demon Logo" width="200" height="200">
+  <img src="https://via.placeholder.com/200x200?text=Demon" alt="Demon Logo" width="200" height="200">
   <h3>A modern, expressive programming language with built-in data structures and algorithms</h3>
 </div>
 
 ## Overview
-
 Demon is a dynamic programming language designed for clarity, expressiveness, and ease of use. It combines the best features of modern languages with a clean syntax and powerful abstractions, with a special focus on built-in data structures and algorithms.
 
 ```demon
