@@ -6,7 +6,7 @@ Thank you for your interest in contributing to the Demon programming language! T
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/Demon.git
+   git clone https://github.com/moah0911/Demon.git
    cd Demon
    ```
 
