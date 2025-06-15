@@ -5,6 +5,7 @@ Parser for the Demon programming language.
 from typing import List, Optional, Any, Dict, Tuple
 from .tokens import Token, TokenType
 from . import ast
+from .subscript_expr import SubscriptExpr
 
 class ParseError(Exception):
     """Exception raised during parsing."""
@@ -161,8 +162,29 @@ class Parser:
                 variable = ast.Var(var_name, None, False)
                 
                 return ast.ForEach(variable, iterable, body)
+            elif self.match(TokenType.EQUAL):
+                # C-style for loop with initializer as part of declaration
+                initializer_expr = self.expression()
+                initializer = ast.Var(var_name, initializer_expr, False)
+                
+                self.consume(TokenType.SEMICOLON, "Expect ';' after loop initializer.")
+                
+                condition = None
+                if not self.check(TokenType.SEMICOLON):
+                    condition = self.expression()
+                self.consume(TokenType.SEMICOLON, "Expect ';' after loop condition.")
+                
+                increment = None
+                if not self.check(TokenType.RIGHT_PAREN):
+                    increment = self.expression()
+                self.consume(TokenType.RIGHT_PAREN, "Expect ')' after for clauses.")
+                
+                body = self.statement()
+                
+                # Create a For node
+                return ast.For(initializer, condition, increment, body)
             else:
-                # C-style for loop, continue with normal parsing
+                # Regular variable declaration
                 initializer = self.var_declaration(False)
         elif self.match(TokenType.SEMICOLON):
             initializer = None
@@ -181,20 +203,8 @@ class Parser:
         
         body = self.statement()
         
-        # Create a block for the loop body that includes the increment
-        if increment is not None:
-            body = ast.Block([body, ast.Expression(increment)])
-        
-        # Create a while loop with the condition
-        if condition is None:
-            condition = ast.Literal(True)
-        body = ast.While(condition, body)
-        
-        # Create a block that includes the initializer and the loop
-        if initializer is not None:
-            body = ast.Block([initializer, body])
-        
-        return body
+        # Create a For node
+        return ast.For(initializer, condition, increment, body)
     
     def if_statement(self) -> ast.Stmt:
         """Parse an if statement."""
@@ -293,6 +303,10 @@ class Parser:
                 return ast.Assign(name, value)
             elif isinstance(expr, ast.Get):
                 return ast.Set(expr.obj, expr.name, value)
+            elif isinstance(expr, SubscriptExpr):
+                # Handle array/list index assignment
+                from .subscript_assign_expr import SubscriptAssignExpr
+                return SubscriptAssignExpr(expr.obj, expr.index, value)
             
             self.error(equals, "Invalid assignment target.")
         
@@ -383,6 +397,11 @@ class Parser:
             elif self.match(TokenType.DOT):
                 name = self.consume(TokenType.IDENTIFIER, "Expect property name after '.'.")
                 expr = ast.Get(expr, name)
+            elif self.match(TokenType.LEFT_BRACKET):
+                # Parse array indexing with square brackets
+                index = self.expression()
+                self.consume(TokenType.RIGHT_BRACKET, "Expect ']' after array index.")
+                expr = SubscriptExpr(expr, index)
             else:
                 break
         

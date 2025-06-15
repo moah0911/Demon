@@ -1,0 +1,105 @@
+// Demonstrating functional programming in Demon
+
+print("Functional Programming Demo");
+print("-------------------------");
+
+// 1. Higher-order functions
+print("\n1. Higher-order functions:");
+
+// Function that takes a function as an argument
+func apply_twice(f, x) {
+    return f(f(x));
+}
+
+// Function to be passed as an argument
+func add_one(x) {
+    return x + 1;
+}
+
+print("apply_twice(add_one, 5) = " + apply_twice(add_one, 5));
+
+// 2. Function composition
+print("\n2. Function composition:");
+
+func compose(f, g) {
+    func composed(x) {
+        return f(g(x));
+    }
+    return composed;
+}
+
+func square(x) {
+    return x * x;
+}
+
+func double(x) {
+    return x * 2;
+}
+
+let square_then_double = compose(double, square);
+let double_then_square = compose(square, double);
+
+print("square_then_double(3) = " + square_then_double(3));
+print("double_then_square(3) = " + double_then_square(3));
+
+// 3. Closures
+print("\n3. Closures:");
+
+func make_adder(n) {
+    func add(x) {
+        return x + n;
+    }
+    return add;
+}
+
+let add5 = make_adder(5);
+let add10 = make_adder(10);
+
+print("add5(3) = " + add5(3));
+print("add10(3) = " + add10(3));
+
+// 4. Currying
+print("\n4. Currying:");
+
+func curry_add(a) {
+    func inner(b) {
+        return a + b;
+    }
+    return inner;
+}
+
+let add3 = curry_add(3);
+print("add3(4) = " + add3(4));
+print("curry_add(2)(5) = " + curry_add(2)(5));
+
+// 5. Recursion
+print("\n5. Recursion:");
+
+func fibonacci(n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+print("fibonacci(7) = " + fibonacci(7));
+
+// 6. Function that returns multiple functions
+print("\n6. Function that returns multiple functions:");
+
+func make_operations() {
+    func add(a, b) { return a + b; }
+    func subtract(a, b) { return a - b; }
+    func multiply(a, b) { return a * b; }
+    
+    // Since we can't use object access, we'll just describe what would happen
+    print("  - Created add function: add(5, 3) = " + add(5, 3));
+    print("  - Created subtract function: subtract(10, 4) = " + subtract(10, 4));
+    print("  - Created multiply function: multiply(4, 2) = " + multiply(4, 2));
+    
+    return "Operations created";
+}
+
+make_operations();
+
+print("\nFunctional programming demonstrations completed!");

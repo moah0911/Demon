@@ -1,0 +1,98 @@
+// Demonstrating functions in Demon
+
+print("Functions Demo");
+print("-------------");
+
+// Basic function
+print("\n1. Basic function:");
+func greet() {
+    print("Hello, world!");
+}
+greet();
+
+// Function with parameters
+print("\n2. Function with parameters:");
+func greetPerson(name) {
+    print("Hello, " + name + "!");
+}
+greetPerson("Alice");
+greetPerson("Bob");
+
+// Function with return value
+print("\n3. Function with return value:");
+func add(a, b) {
+    return a + b;
+}
+let sum = add(5, 3);
+print("5 + 3 = " + sum);
+
+// Function with multiple return statements
+print("\n4. Function with multiple return statements:");
+func getAbsoluteValue(number) {
+    if (number >= 0) {
+        return number;
+    } else {
+        return -number;
+    }
+}
+print("Absolute value of 5: " + getAbsoluteValue(5));
+print("Absolute value of -5: " + getAbsoluteValue(-5));
+
+// Recursive function
+print("\n5. Recursive function:");
+func factorial(n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+print("Factorial of 5: " + factorial(5));
+
+// Function as a value
+print("\n6. Function as a value:");
+func multiply(a, b) {
+    return a * b;
+}
+let operation = multiply;
+print("Result of operation(4, 6): " + operation(4, 6));
+
+// Higher-order function
+print("\n7. Higher-order function:");
+func applyTwice(func, value) {
+    return func(func(value));
+}
+
+func double(x) {
+    return x * 2;
+}
+
+print("Applying double twice to 3: " + applyTwice(double, 3));
+
+// Function with default parameter simulation
+print("\n8. Function with default parameter simulation:");
+func greetWithTitle(name, title) {
+    if (title == nil) {
+        title = "Mr./Ms.";
+    }
+    return "Hello, " + title + " " + name + "!";
+}
+print(greetWithTitle("Johnson", "Dr."));
+print(greetWithTitle("Smith", nil));
+
+// Closure
+print("\n9. Closure:");
+func makeCounter() {
+    let count = 0;
+    func counter() {
+        count = count + 1;
+        return count;
+    }
+    return counter;
+}
+
+let counter = makeCounter();
+print("Counter: " + counter());
+print("Counter: " + counter());
+print("Counter: " + counter());
+
+print("\nFunction demonstrations completed!");

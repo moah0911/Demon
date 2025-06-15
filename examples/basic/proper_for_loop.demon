@@ -1,0 +1,53 @@
+// Demonstrating proper for loops in Demon
+
+print("For Loop Demonstrations");
+print("---------------------");
+
+// Basic for loop
+print("\n1. Basic for loop:");
+for (let i = 1; i <= 5; i = i + 1) {
+    print("Count: " + i);
+}
+
+// For loop with different increment
+print("\n2. For loop with different increment:");
+for (let j = 0; j <= 10; j = j + 2) {
+    print("Even number: " + j);
+}
+
+// For loop counting down
+print("\n3. For loop counting down:");
+for (let k = 5; k > 0; k = k - 1) {
+    print("Countdown: " + k);
+}
+print("Blast off!");
+
+// For loop with break
+print("\n4. For loop with break:");
+for (let m = 1; m <= 10; m = m + 1) {
+    if (m == 6) {
+        print("Breaking at " + m);
+        break;
+    }
+    print("m = " + m);
+}
+
+// For loop with continue
+print("\n5. For loop with continue:");
+for (let n = 0; n < 10; n = n + 1) {
+    if (n % 2 == 0) {
+        // Skip even numbers
+        continue;
+    }
+    print("Odd number: " + n);
+}
+
+// Nested for loops
+print("\n6. Nested for loops:");
+for (let outer = 1; outer <= 3; outer = outer + 1) {
+    for (let inner = 1; inner <= 3; inner = inner + 1) {
+        print("outer = " + outer + ", inner = " + inner);
+    }
+}
+
+print("\nLoop demonstrations completed!");

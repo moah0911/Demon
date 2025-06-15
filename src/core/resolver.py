@@ -9,6 +9,8 @@ from collections import defaultdict, namedtuple
 
 from . import ast
 from .tokens import Token, TokenType
+from .subscript_expr import SubscriptExpr
+from .subscript_assign_expr import SubscriptAssignExpr
 
 class RuntimeError(Exception):
     """Runtime error for the Demon interpreter."""
@@ -162,6 +164,24 @@ class Resolver(ast.Visitor):
         self.visit_stmt(stmt.body)
         self.loop_depth -= 1
     
+    def visit_for_stmt(self, stmt: ast.For):
+        # Resolve the initializer if present
+        if stmt.initializer:
+            self.visit_stmt(stmt.initializer)
+        
+        # Resolve the condition if present
+        if stmt.condition:
+            self.visit_expr(stmt.condition)
+        
+        # Resolve the increment if present
+        if stmt.increment:
+            self.visit_expr(stmt.increment)
+        
+        # Resolve the body with increased loop depth
+        self.loop_depth += 1
+        self.visit_stmt(stmt.body)
+        self.loop_depth -= 1
+    
     def visit_foreach_stmt(self, stmt: ast.ForEach):
         # Resolve the iterable
         self.visit_expr(stmt.iterable)
@@ -294,6 +314,17 @@ class Resolver(ast.Visitor):
         self.begin_scope()
         self.resolve(expr.statements)
         self.end_scope()
+    
+    def visit_subscript_expr(self, expr):
+        """Resolve a subscript expression."""
+        self.visit_expr(expr.obj)
+        self.visit_expr(expr.index)
+        
+    def visit_subscript_assign_expr(self, expr):
+        """Resolve a subscript assignment expression."""
+        self.visit_expr(expr.obj)
+        self.visit_expr(expr.index)
+        self.visit_expr(expr.value)
     
     # Helper method for resolving function-like constructs
     def resolve_function_like(self, params, body, function_type):

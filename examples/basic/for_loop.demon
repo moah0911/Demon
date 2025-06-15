@@ -1,0 +1,81 @@
+// Demonstrating for loops in Demon using while loops
+
+print("For Loop Demonstrations");
+print("---------------------");
+
+// Basic for loop using while
+print("\n1. Basic for loop:");
+let i = 1;
+while (i <= 5) {
+    print("Count: " + i);
+    i = i + 1;
+}
+
+// For loop with different increment using while
+print("\n2. For loop with different increment:");
+let j = 0;
+while (j <= 10) {
+    print("Even number: " + j);
+    j = j + 2;
+}
+
+// For loop counting down using while
+print("\n3. For loop counting down:");
+let k = 5;
+while (k > 0) {
+    print("Countdown: " + k);
+    k = k - 1;
+}
+print("Blast off!");
+
+// For loop with break using while
+print("\n4. For loop with break:");
+let m = 1;
+while (m <= 10) {
+    if (m == 6) {
+        print("Breaking at " + m);
+        break;
+    }
+    print("m = " + m);
+    m = m + 1;
+}
+
+// For loop with continue using while
+print("\n5. For loop with continue:");
+let n = 0;
+while (n < 10) {
+    n = n + 1;
+    if (n % 2 == 0) {
+        // Skip even numbers
+        continue;
+    }
+    print("Odd number: " + n);
+}
+
+// Nested for loops using while
+print("\n6. Nested for loops:");
+let outer = 1;
+while (outer <= 3) {
+    let inner = 1;
+    while (inner <= 3) {
+        print("outer = " + outer + ", inner = " + inner);
+        inner = inner + 1;
+    }
+    outer = outer + 1;
+}
+
+// For loop to calculate factorial using while
+print("\n7. Calculating factorial using a loop:");
+func factorial(n) {
+    let result = 1;
+    let factor = 1;
+    while (factor <= n) {
+        result = result * factor;
+        factor = factor + 1;
+    }
+    return result;
+}
+
+print("Factorial of 5 = " + factorial(5));
+
+print("\nLoop demonstrations completed!");

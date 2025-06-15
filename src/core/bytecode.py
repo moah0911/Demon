@@ -44,6 +44,8 @@ class OpCode(Enum):
     GET_INDEX = auto()     # Get item at index
     SET_INDEX = auto()     # Set item at index
     IMPORT = auto()        # Import module
+    AND = auto()           # Logical AND
+    OR = auto()            # Logical OR
 
 class Chunk:
     """A chunk of bytecode."""
@@ -172,7 +174,7 @@ class BytecodeCompiler(ast.Visitor):
         self.compile_expr(stmt.expression)
         self.emit(OpCode.POP)  # Discard the result
     
-    def visit_print(self, stmt: ast.Print):
+    def visit_print_stmt(self, stmt: ast.Print):
         for expr in stmt.expressions:
             self.compile_expr(expr)
         self.emit(OpCode.PRINT, len(stmt.expressions))
@@ -247,6 +249,44 @@ class BytecodeCompiler(ast.Visitor):
         self.current.chunk.code[exit_jump + 1] = len(self.current.chunk.code) - exit_jump - 2
         
         self.emit(OpCode.POP)  # Pop condition
+    
+    def visit_for_stmt(self, stmt: ast.For):
+        # Compile initializer
+        if stmt.initializer:
+            self.compile_stmt(stmt.initializer)
+        
+        loop_start = len(self.current.chunk.code)
+        
+        # Compile condition
+        if stmt.condition:
+            self.compile_expr(stmt.condition)
+        else:
+            # If no condition, use true
+            self.emit(OpCode.TRUE)
+        
+        # Emit jump if false
+        exit_jump = len(self.current.chunk.code)
+        self.emit(OpCode.JUMP_IF_FALSE, 0)  # Placeholder jump offset
+        
+        # Pop condition
+        self.emit(OpCode.POP)
+        
+        # Compile body
+        self.compile_stmt(stmt.body)
+        
+        # Compile increment
+        if stmt.increment:
+            self.compile_expr(stmt.increment)
+            self.emit(OpCode.POP)  # Discard increment result
+        
+        # Emit loop back
+        self.emit(OpCode.LOOP, len(self.current.chunk.code) - loop_start + 2)
+        
+        # Patch exit jump
+        self.current.chunk.code[exit_jump + 1] = len(self.current.chunk.code) - exit_jump - 2
+        
+        # Pop condition
+        self.emit(OpCode.POP)
     
     def visit_function_stmt(self, stmt: ast.Function):
         # Create function object
@@ -418,10 +458,35 @@ class BytecodeCompiler(ast.Visitor):
     def visit_grouping_expr(self, expr: ast.Grouping):
         self.compile_expr(expr.expression)
     
-    def visit_listliteral(self, expr: ast.ListLiteral):
+    def visit_listliteral_expr(self, expr: ast.ListLiteral):
         # Compile elements
         for element in expr.elements:
             self.compile_expr(element)
         
         # Emit list creation instruction with element count
         self.emit(OpCode.LIST, len(expr.elements))
+        
+    def visit_get_expr(self, expr: ast.Get):
+        # Compile object
+        self.compile_expr(expr.obj)
+        
+        # Get property name
+        name = expr.name.lexeme
+        name_idx = self.current.chunk.add_constant(name)
+        
+        # Emit get property instruction
+        self.emit(OpCode.GET_PROPERTY, name_idx)
+        
+    def visit_set_expr(self, expr: ast.Set):
+        # Compile object
+        self.compile_expr(expr.obj)
+        
+        # Compile value
+        self.compile_expr(expr.value)
+        
+        # Get property name
+        name = expr.name.lexeme
+        name_idx = self.current.chunk.add_constant(name)
+        
+        # Emit set property instruction
+        self.emit(OpCode.SET_PROPERTY, name_idx)

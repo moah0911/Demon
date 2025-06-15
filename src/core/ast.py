@@ -27,6 +27,14 @@ class Visitor:
     def visit_default_stmt(self, stmt):
         """Default statement visitor."""
         raise NotImplementedError(f"No visit method for {stmt.__class__.__name__}")
+    
+    def visit_subscript_expr(self, expr):
+        """Visit a subscript expression."""
+        return self.visit_default_expr(expr)
+        
+    def visit_subscript_assign_expr(self, expr):
+        """Visit a subscript assignment expression."""
+        return self.visit_default_expr(expr)
 
 class Expr:
     """Base class for expressions."""
@@ -175,6 +183,14 @@ class BlockExpr(Expr):
     def __init__(self, statements: List[Stmt]):
         self.statements = statements
 
+class Decorator(Expr):
+    """Decorator expression."""
+    
+    def __init__(self, name: Token, arguments: List[Expr], target: Expr):
+        self.name = name
+        self.arguments = arguments
+        self.target = target
+
 class Expression(Stmt):
     """Expression statement."""
     
@@ -214,6 +230,15 @@ class While(Stmt):
     
     def __init__(self, condition: Expr, body: Stmt):
         self.condition = condition
+        self.body = body
+
+class For(Stmt):
+    """For statement."""
+    
+    def __init__(self, initializer: Optional[Stmt], condition: Optional[Expr], increment: Optional[Expr], body: Stmt):
+        self.initializer = initializer
+        self.condition = condition
+        self.increment = increment
         self.body = body
 
 class ForEach(Stmt):

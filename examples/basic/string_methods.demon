@@ -1,0 +1,65 @@
+// Example of using the string methods in Demon language
+
+// Basic string operations
+var message = "Hello, Demon Language!";
+print("Original message:", message);
+print("Length:", string.length(message));
+
+// Case conversion
+print("\nCase conversion:");
+print("Uppercase:", string.upper(message));
+print("Lowercase:", string.lower(message));
+print("Title case:", string.title(message));
+print("Capitalized:", string.capitalize(message));
+print("Swapcase:", string.swapcase(message));
+
+// Trimming and padding
+var paddedText = "   spaced text   ";
+print("\nTrimming and padding:");
+print("Original:", "'" + paddedText + "'");
+print("Trimmed:", "'" + string.trim(paddedText) + "'");
+print("Left trim:", "'" + string.ltrim(paddedText) + "'");
+print("Right trim:", "'" + string.rtrim(paddedText) + "'");
+print("Pad left:", "'" + string.pad_left(message, 30, '-') + "'");
+print("Pad right:", "'" + string.pad_right(message, 30, '-') + "'");
+print("Center:", "'" + string.center(message, 30, '*') + "'");
+
+// Searching and replacing
+print("\nSearching and replacing:");
+print("Contains 'Demon':", string.contains(message, "Demon"));
+print("Starts with 'Hello':", string.starts_with(message, "Hello"));
+print("Ends with '!':", string.ends_with(message, "!"));
+print("Find 'Demon':", string.find(message, "Demon"));
+print("Replace 'Demon' with 'Awesome':", string.replace(message, "Demon", "Awesome"));
+
+// Splitting and joining
+print("\nSplitting and joining:");
+var parts = string.split(message, ", ");
+print("Split by ', ':", parts);
+print("Join with '-':", string.join("-", parts));
+print("Split lines:", string.split_lines("Line 1\nLine 2\nLine 3"));
+
+// Substring operations
+print("\nSubstring operations:");
+print("Substring (7, 12):", string.substring(message, 7, 12));
+print("Character at 0:", string.char_at(message, 0));
+
+// Checking and validation
+print("\nChecking and validation:");
+print("Is empty:", string.is_empty(message));
+print("Is alpha:", string.is_alpha("OnlyLetters"));
+print("Is digit:", string.is_digit("12345"));
+print("Is alphanumeric:", string.is_alnum("Letters123"));
+print("Is space:", string.is_space("   "));
+print("Is lowercase:", string.is_lower("lowercase"));
+print("Is uppercase:", string.is_upper("UPPERCASE"));
+
+// Formatting
+print("\nFormatting:");
+print(string.format("Name: {}, Age: {}", "Demon", 1));
+
+// Advanced operations
+print("\nAdvanced operations:");
+print("Repeat 'Demon' 3 times:", string.repeat("Demon ", 3));
+print("Reverse:", string.reverse(message));
+print("Count 'e':", string.count(message, "e"));

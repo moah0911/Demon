@@ -1,0 +1,112 @@
+// Unit tests for Demon standard library functions
+
+print("Demon Standard Library Unit Tests");
+print("------------------------------");
+
+// Test counter
+let tests_run = 0;
+let tests_passed = 0;
+let tests_failed = 0;
+
+// Test assertion functions
+func assert_equal(actual, expected, message) {
+    tests_run = tests_run + 1;
+    
+    if (actual == expected) {
+        print("✓ PASS: " + message);
+        tests_passed = tests_passed + 1;
+    } else {
+        print("✗ FAIL: " + message);
+        print("  Expected: " + expected);
+        print("  Actual:   " + actual);
+        tests_failed = tests_failed + 1;
+    }
+}
+
+func assert_approx_equal(actual, expected, message) {
+    tests_run = tests_run + 1;
+    
+    // Check if the values are approximately equal (within 0.0001)
+    let diff = actual - expected;
+    if (diff < 0) {
+        diff = -diff;
+    }
+    
+    if (diff < 0.0001) {
+        print("✓ PASS: " + message);
+        tests_passed = tests_passed + 1;
+    } else {
+        print("✗ FAIL: " + message);
+        print("  Expected: " + expected);
+        print("  Actual:   " + actual);
+        tests_failed = tests_failed + 1;
+    }
+}
+
+// Test suite function
+func run_test_suite(name, test_func) {
+    print("\nRunning test suite: " + name);
+    print("-------------------------");
+    test_func();
+    print("-------------------------");
+}
+
+// Math function tests
+func math_function_tests() {
+    // Test sqrt function
+    assert_equal(sqrt(16), 4, "sqrt(16) = 4");
+    assert_equal(sqrt(25), 5, "sqrt(25) = 5");
+    assert_approx_equal(sqrt(2), 1.4142, "sqrt(2) ≈ 1.4142");
+    
+    // Test pow function
+    assert_equal(pow(2, 3), 8, "pow(2, 3) = 8");
+    assert_equal(pow(5, 2), 25, "pow(5, 2) = 25");
+    
+    // Test sin function
+    assert_approx_equal(sin(0), 0, "sin(0) = 0");
+    assert_approx_equal(sin(3.14159 / 2), 1, "sin(π/2) ≈ 1");
+    
+    // Test cos function
+    assert_approx_equal(cos(0), 1, "cos(0) = 1");
+    assert_approx_equal(cos(3.14159), -1, "cos(π) ≈ -1");
+    
+    // Test tan function
+    assert_approx_equal(tan(0), 0, "tan(0) = 0");
+    assert_approx_equal(tan(3.14159 / 4), 1, "tan(π/4) ≈ 1");
+}
+
+// String function tests
+func string_function_tests() {
+    // Test len function
+    assert_equal(len("hello"), 5, "len(\"hello\") = 5");
+    assert_equal(len(""), 0, "len(\"\") = 0");
+    
+    // Test string concatenation
+    assert_equal("hello" + " " + "world", "hello world", "\"hello\" + \" \" + \"world\" = \"hello world\"");
+}
+
+// Array function tests
+func array_function_tests() {
+    // Test len function with arrays
+    let arr = [1, 2, 3, 4, 5];
+    assert_equal(len(arr), 5, "len([1, 2, 3, 4, 5]) = 5");
+    assert_equal(len([]), 0, "len([]) = 0");
+}
+
+// Run the test suites
+run_test_suite("Math Function Tests", math_function_tests);
+run_test_suite("String Function Tests", string_function_tests);
+run_test_suite("Array Function Tests", array_function_tests);
+
+// Print test summary
+print("\nTest Summary");
+print("------------");
+print("Tests run:    " + tests_run);
+print("Tests passed: " + tests_passed);
+print("Tests failed: " + tests_failed);
+
+if (tests_failed == 0) {
+    print("\nAll tests passed! ✓");
+} else {
+    print("\nSome tests failed! ✗");
+}

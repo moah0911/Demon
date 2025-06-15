@@ -1,0 +1,49 @@
+// Demonstrating foreach loops in Demon
+
+print("ForEach Loop Demonstrations");
+print("-------------------------");
+
+// Basic foreach loop with a list
+print("\n1. Basic foreach loop with a list:");
+let fruits = ["apple", "banana", "cherry", "date"];
+for (let fruit in fruits) {
+    print("Fruit: " + fruit);
+}
+
+// Foreach loop with index tracking
+print("\n2. Foreach loop with index tracking:");
+let colors = ["red", "green", "blue", "yellow"];
+let index = 0;
+for (let color in colors) {
+    print("Color #" + index + ": " + color);
+    index = index + 1;
+}
+
+// Simple object properties
+print("\n3. Object properties:");
+let person = {"name": "John", "age": 30, "city": "New York"};
+// We can't iterate over object properties yet
+
+// Foreach loop with break
+print("\n4. Foreach loop with break:");
+let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+for (let num in numbers) {
+    if (num > 5) {
+        print("Breaking at " + num);
+        break;
+    }
+    print("Number: " + num);
+}
+
+// Foreach loop with continue
+print("\n5. Foreach loop with continue:");
+let values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+for (let val in values) {
+    if (val % 2 == 0) {
+        // Skip even numbers
+        continue;
+    }
+    print("Odd value: " + val);
+}
+
+print("\nForEach loop demonstrations completed!");

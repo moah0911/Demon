@@ -1,0 +1,126 @@
+// Simple test runner for Demon
+
+print("Demon Test Runner");
+print("---------------");
+
+// Test counter
+let tests_run = 0;
+let tests_passed = 0;
+let tests_failed = 0;
+
+// Test assertion functions
+func assert_equal(actual, expected, message) {
+    tests_run = tests_run + 1;
+    
+    if (actual == expected) {
+        print("✓ PASS: " + message);
+        tests_passed = tests_passed + 1;
+    } else {
+        print("✗ FAIL: " + message);
+        print("  Expected: " + expected);
+        print("  Actual:   " + actual);
+        tests_failed = tests_failed + 1;
+    }
+}
+
+func assert_not_equal(actual, expected, message) {
+    tests_run = tests_run + 1;
+    
+    if (actual != expected) {
+        print("✓ PASS: " + message);
+        tests_passed = tests_passed + 1;
+    } else {
+        print("✗ FAIL: " + message);
+        print("  Expected not to be: " + expected);
+        print("  Actual:            " + actual);
+        tests_failed = tests_failed + 1;
+    }
+}
+
+func assert_true(condition, message) {
+    tests_run = tests_run + 1;
+    
+    if (condition) {
+        print("✓ PASS: " + message);
+        tests_passed = tests_passed + 1;
+    } else {
+        print("✗ FAIL: " + message);
+        print("  Expected: true");
+        print("  Actual:   false");
+        tests_failed = tests_failed + 1;
+    }
+}
+
+func assert_false(condition, message) {
+    tests_run = tests_run + 1;
+    
+    if (!condition) {
+        print("✓ PASS: " + message);
+        tests_passed = tests_passed + 1;
+    } else {
+        print("✗ FAIL: " + message);
+        print("  Expected: false");
+        print("  Actual:   true");
+        tests_failed = tests_failed + 1;
+    }
+}
+
+// Test suite function
+func run_test_suite(name, test_func) {
+    print("\nRunning test suite: " + name);
+    print("-------------------------");
+    test_func();
+    print("-------------------------");
+}
+
+// Example test suite
+func math_tests() {
+    assert_equal(2 + 2, 4, "Addition works correctly");
+    assert_equal(5 - 3, 2, "Subtraction works correctly");
+    assert_equal(3 * 4, 12, "Multiplication works correctly");
+    assert_equal(10 / 2, 5, "Division works correctly");
+    assert_not_equal(2 + 2, 5, "Addition doesn't give wrong results");
+    assert_true(5 > 3, "Greater than comparison works");
+    assert_false(5 < 3, "Less than comparison works correctly");
+}
+
+func string_tests() {
+    assert_equal("Hello" + " " + "World", "Hello World", "String concatenation works");
+    assert_equal(len("Hello"), 5, "String length function works");
+    assert_true("abc" != "def", "String inequality works");
+    assert_false("abc" == "def", "String equality works");
+}
+
+func function_tests() {
+    func add(a, b) { return a + b; }
+    func multiply(a, b) { return a * b; }
+    
+    assert_equal(add(3, 4), 7, "Function add works");
+    assert_equal(multiply(3, 4), 12, "Function multiply works");
+    
+    func make_adder(n) {
+        func add(x) { return x + n; }
+        return add;
+    }
+    
+    let add5 = make_adder(5);
+    assert_equal(add5(10), 15, "Closure works correctly");
+}
+
+// Run the test suites
+run_test_suite("Math Tests", math_tests);
+run_test_suite("String Tests", string_tests);
+run_test_suite("Function Tests", function_tests);
+
+// Print test summary
+print("\nTest Summary");
+print("------------");
+print("Tests run:    " + tests_run);
+print("Tests passed: " + tests_passed);
+print("Tests failed: " + tests_failed);
+
+if (tests_failed == 0) {
+    print("\nAll tests passed! ✓");
+} else {
+    print("\nSome tests failed! ✗");
+}

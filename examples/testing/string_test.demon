@@ -1,0 +1,33 @@
+// Test for the string methods in Demon language
+
+print("String Methods Test");
+print("=================");
+
+// Basic string operations
+let message = "Hello, Demon Language!";
+print("\nOriginal message: " + message);
+
+// Using the string module
+print("\nUsing string module:");
+print("Length: " + string.length(message));
+print("Uppercase: " + string.upper(message));
+print("Lowercase: " + string.lower(message));
+
+// Searching and replacing
+print("\nSearching and replacing:");
+print("Contains 'Demon': " + string.contains(message, "Demon"));
+print("Starts with 'Hello': " + string.starts_with(message, "Hello"));
+print("Replace 'Demon' with 'Awesome': " + string.replace(message, "Demon", "Awesome"));
+
+// Trimming
+let paddedText = "   spaced text   ";
+print("\nTrimming:");
+print("Original: '" + paddedText + "'");
+print("Trimmed: '" + string.trim(paddedText) + "'");
+
+// Advanced operations
+print("\nAdvanced operations:");
+print("Repeat 'Demon' 3 times: " + string.repeat("Demon ", 3));
+print("Reverse: " + string.reverse(message));
+
+print("\nString test completed successfully!");

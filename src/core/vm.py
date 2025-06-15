@@ -175,6 +175,10 @@ class VM:
                     self.stack.append(a + b)
                 elif isinstance(a, str) and isinstance(b, str):
                     self.stack.append(a + b)
+                elif isinstance(a, str) and isinstance(b, (int, float)):
+                    self.stack.append(a + str(b))
+                elif isinstance(a, (int, float)) and isinstance(b, str):
+                    self.stack.append(str(a) + b)
                 else:
                     raise RuntimeError("Operands must be two numbers or two strings.")
             
@@ -365,6 +369,14 @@ class VM:
                 
                 list_obj[index] = value
                 self.stack.append(value)
+                
+            elif op == OpCode.AND:
+                # Logical AND - already handled by short-circuit evaluation in compiler
+                pass
+                
+            elif op == OpCode.OR:
+                # Logical OR - already handled by short-circuit evaluation in compiler
+                pass
             
             else:
                 raise RuntimeError(f"Unknown opcode: {op}")
@@ -374,7 +386,7 @@ class VM:
         if isinstance(callee, Closure):
             return self.call(callee, arg_count)
         elif isinstance(callee, NativeFunction):
-            if arg_count != callee.arity:
+            if arg_count != callee.arity and callee.arity != -1:
                 raise RuntimeError(f"Expected {callee.arity} arguments but got {arg_count}.")
             
             args = []

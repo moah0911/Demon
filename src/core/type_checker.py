@@ -354,7 +354,7 @@ class TypeChecker(ast.Visitor):
     def visit_grouping_expr(self, expr: ast.Grouping) -> Type:
         return self.check_expr(expr.expression)
     
-    def visit_listliteral(self, expr: ast.ListLiteral) -> Type:
+    def visit_listliteral_expr(self, expr: ast.ListLiteral) -> Type:
         if not expr.elements:
             # Empty list, assume ANY_TYPE for elements
             return ListType(ANY_TYPE)
@@ -371,3 +371,29 @@ class TypeChecker(ast.Visitor):
         else:
             # Mixed types, use ANY_TYPE
             return ListType(ANY_TYPE)
+            
+    def visit_get_expr(self, expr: ast.Get) -> Type:
+        obj_type = self.check_expr(expr.obj)
+        
+        # Handle list access
+        if isinstance(obj_type, ListType):
+            if expr.name.lexeme == "length":
+                return INT_TYPE
+            
+            # Check for list methods
+            if expr.name.lexeme in ["append", "pop", "insert", "remove", "index", "count"]:
+                if expr.name.lexeme == "append":
+                    return FunctionType([ANY_TYPE], obj_type)
+                elif expr.name.lexeme == "pop":
+                    return FunctionType([INT_TYPE], obj_type.element_type)
+                elif expr.name.lexeme == "insert":
+                    return FunctionType([INT_TYPE, ANY_TYPE], obj_type)
+                elif expr.name.lexeme == "remove":
+                    return FunctionType([ANY_TYPE], NIL_TYPE)
+                elif expr.name.lexeme == "index":
+                    return FunctionType([ANY_TYPE], INT_TYPE)
+                elif expr.name.lexeme == "count":
+                    return FunctionType([ANY_TYPE], INT_TYPE)
+        
+        # Default behavior for other types
+        return ANY_TYPE

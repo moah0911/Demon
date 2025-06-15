@@ -1,0 +1,46 @@
+// Demonstrating reactive programming in Demon
+
+print("Reactive Programming Demo");
+print("----------------------");
+
+// 1. Basic signal
+print("\n1. Basic signal:");
+
+// Create a signal with an initial value
+let count = signal(0);
+print("Initial count: " + count.value);
+
+// Update the signal value
+count.value = 1;
+print("Updated count: " + count.value);
+
+// 2. Computed values
+print("\n2. Computed values:");
+
+// Create a computed signal that depends on count
+let doubleCount = computed(func() {
+    return count.value * 2;
+});
+
+print("count: " + count.value);
+print("doubleCount: " + doubleCount.value);
+
+// Update the count and see the computed value change
+count.value = 5;
+print("Updated count: " + count.value);
+print("Updated doubleCount: " + doubleCount.value);
+
+// 3. Effects
+print("\n3. Effects:");
+
+// Create an effect that runs when count changes
+effect(func() {
+    print("Effect triggered: count is now " + count.value);
+    print("doubleCount is now " + doubleCount.value);
+});
+
+// Update the count to trigger the effect
+print("\nUpdating count to trigger effect...");
+count.value = 10;
+
+print("\nReactive programming demonstration completed!");

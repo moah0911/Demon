@@ -8,6 +8,18 @@ import os
 from typing import Dict, List, Any, Optional, Union, Tuple
 from .tokens import Token, TokenType
 from . import ast
+from .subscript_expr import SubscriptExpr
+
+# Import standard library features
+try:
+    from ..stdlib.pattern_matching import match_value, create_pattern
+    from ..stdlib.reactive import signal, computed, effect, ReactiveDict, ReactiveList
+    from ..stdlib.dataflow import create_graph, create_pipeline
+    from ..stdlib.contextual import create_context, with_context
+    from ..stdlib.memoize import memoize, lru_cache, ttl_cache
+    STDLIB_LOADED = True
+except ImportError:
+    STDLIB_LOADED = False
 
 class RuntimeError(Exception):
     """Runtime error in the Demon language."""
@@ -15,6 +27,7 @@ class RuntimeError(Exception):
     def __init__(self, token: Token, message: str):
         self.token = token
         self.message = message
+        self.line = token.line if token else 0
         super().__init__(message)
 
 class Return(Exception):
@@ -243,6 +256,13 @@ class DemonInstance:
         if name.lexeme in self.fields:
             return self.fields[name.lexeme]
         
+        # Check if the object has a get_field method (for reactive objects)
+        if hasattr(self, "get_field"):
+            try:
+                return self.get_field(name.lexeme)
+            except AttributeError:
+                pass
+        
         method = self.klass.find_method(name.lexeme)
         if method is not None:
             return method.bind(self)
@@ -251,6 +271,14 @@ class DemonInstance:
     
     def set(self, name: Token, value: Any):
         """Set a property on this instance."""
+        # Check if the object has a set_field method (for reactive objects)
+        if hasattr(self, "set_field"):
+            try:
+                self.set_field(name.lexeme, value)
+                return
+            except AttributeError:
+                pass
+        
         self.fields[name.lexeme] = value
     
     def __str__(self) -> str:
@@ -261,7 +289,7 @@ class Interpreter(ast.Visitor):
     
     def __init__(self, demon):
         self.demon = demon
-        self.globals = Environment()
+        self.globals = Environment(None)
         self.environment = self.globals
         self.locals = {}
         self.NativeFunction = NativeFunction
@@ -278,6 +306,39 @@ class Interpreter(ast.Visitor):
             
             from src.stdlib.stdlib import DemonStdLib
             DemonStdLib.register_all(self)
+            
+            # Register unique features if stdlib is loaded
+            if STDLIB_LOADED:
+                # Import the reactive bridge and error handler
+                from ..stdlib.reactive_bridge import demon_computed, demon_effect, create_reactive_bridge
+                from ..stdlib.reactive_error_handler import enable_debug_mode, disable_debug_mode, on_reactive_error
+                
+                # Create a reactive bridge with proper error handling
+                reactive_bridge = create_reactive_bridge(self)
+                
+                # Register reactive programming functions
+                self.globals.define("signal", NativeFunction("signal", 1, reactive_bridge["signal"]))
+                self.globals.define("computed", NativeFunction("computed", 1, reactive_bridge["computed"]))
+                self.globals.define("effect", NativeFunction("effect", 1, reactive_bridge["effect"]))
+                
+                # Register reactive debugging functions
+                self.globals.define("enable_reactive_debug", NativeFunction("enable_reactive_debug", 0, enable_debug_mode))
+                self.globals.define("disable_reactive_debug", NativeFunction("disable_reactive_debug", 0, disable_debug_mode))
+                self.globals.define("on_reactive_error", NativeFunction("on_reactive_error", 1, 
+                                                                      lambda fn: on_reactive_error(reactive_bridge["computed"](fn))))
+                
+                # Register other advanced features
+                self.globals.define("create_graph", NativeFunction("create_graph", 0, create_graph))
+                self.globals.define("create_pipeline", NativeFunction("create_pipeline", 0, create_pipeline))
+                self.globals.define("create_context", NativeFunction("create_context", 1, create_context))
+                self.globals.define("with_context", NativeFunction("with_context", 3, with_context))
+                self.globals.define("memoize", NativeFunction("memoize", 1, memoize))
+                self.globals.define("lru_cache", NativeFunction("lru_cache", 1, lru_cache))
+                self.globals.define("ttl_cache", NativeFunction("ttl_cache", 1, ttl_cache))
+                
+                # Add reactive collections with improved implementations
+                self.globals.define("reactive_dict", NativeFunction("reactive_dict", 1, lambda init=None: ReactiveDict(init or {})))
+                self.globals.define("reactive_list", NativeFunction("reactive_list", 1, lambda init=None: ReactiveList(init or [])))
         except ImportError as e:
             print(f"Error importing standard library: {e}")
             # Fallback to basic functions if stdlib is not available
@@ -364,6 +425,31 @@ class Interpreter(ast.Visitor):
                 break
             except Continue:
                 continue
+                
+    def visit_for_stmt(self, stmt: ast.For):
+        # Execute initializer once
+        if stmt.initializer:
+            self.execute(stmt.initializer)
+            
+        while True:
+            # Check condition
+            if stmt.condition and not self.is_truthy(self.evaluate(stmt.condition)):
+                break
+                
+            try:
+                # Execute body
+                self.execute(stmt.body)
+            except Break:
+                break
+            except Continue:
+                # When continue is encountered, skip to the increment
+                if stmt.increment:
+                    self.evaluate(stmt.increment)
+                continue
+                
+            # Execute increment
+            if stmt.increment:
+                self.evaluate(stmt.increment)
     
     def visit_foreach_stmt(self, stmt: ast.ForEach):
         iterable = self.evaluate(stmt.iterable)
@@ -511,29 +597,53 @@ class Interpreter(ast.Visitor):
         if isinstance(obj, DemonInstance):
             return obj.get(expr.name)
         
+        # Check for reactive objects with get_field method
+        if hasattr(obj, "get_field"):
+            try:
+                return obj.get_field(expr.name.lexeme)
+            except AttributeError:
+                pass
+        
         if isinstance(obj, dict):
             if expr.name.lexeme in obj:
                 return obj[expr.name.lexeme]
-            raise RuntimeError(expr.name, f"Undefined property '{expr.name.lexeme}'.")
+            # For dictionary access, return None for undefined properties
+            return None
         
         if isinstance(obj, list):
             if expr.name.lexeme == "length":
                 return len(obj)
             
+            # Support indexing with a property name that's a number
+            try:
+                index = int(expr.name.lexeme)
+                if 0 <= index < len(obj):
+                    return obj[index]
+                else:
+                    raise RuntimeError(expr.name, f"Index {index} out of bounds for list of length {len(obj)}.")
+            except ValueError:
+                pass
+            
             # Check for list methods
             if expr.name.lexeme in ["append", "pop", "insert", "remove", "index", "count"]:
                 if expr.name.lexeme == "append":
-                    return lambda x: obj.append(x) or obj
+                    # Create a callable that will append an item to the list
+                    return NativeFunction("append", 1, lambda x: obj.append(x) or obj)
                 elif expr.name.lexeme == "pop":
-                    return lambda idx=-1: obj.pop(idx)
+                    # Create a callable that will pop an item from the list
+                    return NativeFunction("pop", -1, lambda idx=-1: obj.pop(idx))
                 elif expr.name.lexeme == "insert":
-                    return lambda idx, x: obj.insert(idx, x) or obj
+                    # Create a callable that will insert an item into the list
+                    return NativeFunction("insert", 2, lambda idx, x: obj.insert(idx, x) or obj)
                 elif expr.name.lexeme == "remove":
-                    return lambda x: obj.remove(x) or obj
+                    # Create a callable that will remove an item from the list
+                    return NativeFunction("remove", 1, lambda x: obj.remove(x) or obj)
                 elif expr.name.lexeme == "index":
-                    return lambda x: obj.index(x)
+                    # Create a callable that will return the index of an item in the list
+                    return NativeFunction("index", 1, lambda x: obj.index(x))
                 elif expr.name.lexeme == "count":
-                    return lambda x: obj.count(x)
+                    # Create a callable that will count occurrences of an item in the list
+                    return NativeFunction("count", 1, lambda x: obj.count(x))
         
         if isinstance(obj, str):
             if expr.name.lexeme == "length":
@@ -563,14 +673,21 @@ class Interpreter(ast.Visitor):
     
     def visit_set_expr(self, expr: ast.Set):
         obj = self.evaluate(expr.obj)
+        value = self.evaluate(expr.value)
         
         if isinstance(obj, DemonInstance):
-            value = self.evaluate(expr.value)
             obj.set(expr.name, value)
             return value
         
+        # Check for reactive objects with set_field method
+        if hasattr(obj, "set_field"):
+            try:
+                obj.set_field(expr.name.lexeme, value)
+                return value
+            except AttributeError:
+                pass
+        
         if isinstance(obj, dict):
-            value = self.evaluate(expr.value)
             obj[expr.name.lexeme] = value
             return value
         
@@ -696,6 +813,65 @@ class Interpreter(ast.Visitor):
             self.environment = previous
         
         return result
+        
+    def visit_subscript_expr(self, expr: SubscriptExpr):
+        """Evaluate a subscript expression (array indexing)."""
+        obj = self.evaluate(expr.obj)
+        index = self.evaluate(expr.index)
+        
+        # Handle list/array indexing
+        if isinstance(obj, list):
+            if not isinstance(index, int):
+                raise RuntimeError(None, f"Array index must be an integer, got {type(index).__name__}")
+            
+            if index < 0 or index >= len(obj):
+                raise RuntimeError(None, f"Array index out of bounds: {index} (array length: {len(obj)})")
+                
+            return obj[index]
+            
+        # Handle string indexing
+        elif isinstance(obj, str):
+            if not isinstance(index, int):
+                raise RuntimeError(None, f"String index must be an integer, got {type(index).__name__}")
+                
+            if index < 0 or index >= len(obj):
+                raise RuntimeError(None, f"String index out of bounds: {index} (string length: {len(obj)})")
+                
+            return obj[index]
+            
+        # Handle dictionary access
+        elif isinstance(obj, dict):
+            # For dictionaries, we want to allow accessing keys that don't exist yet
+            # This is common in many languages and makes dictionary usage more flexible
+            return obj.get(index, None)
+            
+        else:
+            raise RuntimeError(None, f"Cannot use subscript operator on type {type(obj).__name__}")
+            
+    def visit_subscript_assign_expr(self, expr):
+        """Evaluate a subscript assignment expression (array[index] = value)."""
+        obj = self.evaluate(expr.obj)
+        index = self.evaluate(expr.index)
+        value = self.evaluate(expr.value)
+        
+        # Handle list/array assignment
+        if isinstance(obj, list):
+            if not isinstance(index, int):
+                raise RuntimeError(None, f"Array index must be an integer, got {type(index).__name__}")
+            
+            if index < 0 or index >= len(obj):
+                raise RuntimeError(None, f"Array index out of bounds: {index} (array length: {len(obj)})")
+                
+            obj[index] = value
+            return value
+            
+        # Handle dictionary assignment
+        elif isinstance(obj, dict):
+            obj[index] = value
+            return value
+            
+        else:
+            raise RuntimeError(None, f"Cannot assign to subscript of type {type(obj).__name__}")
     
     def look_up_variable(self, name: Token, expr: ast.Expr) -> Any:
         """Look up a variable in the appropriate environment."""

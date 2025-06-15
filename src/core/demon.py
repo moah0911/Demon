@@ -334,7 +334,7 @@ class Scanner:
         'false': TokenType.FALSE,
         'nil': TokenType.NIL,
         
-        # Logic
+        # Logic - keep these for backward compatibility
         'and': TokenType.AND,
         'or': TokenType.OR,
         'not': TokenType.BANG,
@@ -396,6 +396,10 @@ class Scanner:
             self.add_token(TokenType.PIPE_FIRST)
         elif c == '|' and self.match('>'):  # |>
             self.add_token(TokenType.PIPE_GT)
+        elif c == '|' and self.match('|'):  # ||
+            self.add_token(TokenType.OR)
+        elif c == '&' and self.match('&'):  # &&
+            self.add_token(TokenType.AND)
         elif c == '?' and self.match('?'):  # ??
             self.add_token(TokenType.NULL_COALESCE)
         elif c == '.' and self.match('.'):  # .. or ..<
@@ -468,7 +472,7 @@ class Scanner:
         elif c == '\n':
             self.line += 1
         # String literals
-        elif c == '"' or c == '\'':
+        elif c == '"' or c == "'":
             self.string(c)
         # Number literals
         elif c.isdigit():
@@ -783,7 +787,8 @@ class Demon:
     
     def runtime_error(self, error: RuntimeError) -> None:
         """Report a runtime error."""
-        print(f"[line {error.token.line}] {error.message}")
+        line = error.token.line if error.token else error.line if hasattr(error, 'line') else "?"
+        print(f"[line {line}] {error.message}")
         self.had_runtime_error = True
 
 

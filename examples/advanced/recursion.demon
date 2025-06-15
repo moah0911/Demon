@@ -1,0 +1,105 @@
+// Demonstrating recursion in Demon
+
+print("Recursion Demo");
+print("-------------");
+
+// 1. Simple recursion - Factorial
+print("\n1. Factorial calculation:");
+
+func factorial(n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+print("factorial(5) = " + factorial(5));
+print("factorial(7) = " + factorial(7));
+
+// 2. Fibonacci sequence
+print("\n2. Fibonacci sequence:");
+
+func fibonacci(n) {
+    if (n <= 0) {
+        return 0;
+    }
+    if (n == 1) {
+        return 1;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+print("fibonacci(7) = " + fibonacci(7));
+print("fibonacci(10) = " + fibonacci(10));
+
+// 3. Recursive sum
+print("\n3. Recursive sum:");
+
+func sum_to_n(n) {
+    if (n <= 0) {
+        return 0;
+    }
+    return n + sum_to_n(n - 1);
+}
+
+print("sum_to_n(5) = " + sum_to_n(5));
+print("sum_to_n(10) = " + sum_to_n(10));
+
+// 4. Greatest common divisor (Euclidean algorithm)
+print("\n4. Greatest common divisor:");
+
+func gcd(a, b) {
+    if (b == 0) {
+        return a;
+    }
+    return gcd(b, a % b);
+}
+
+print("gcd(48, 18) = " + gcd(48, 18));
+print("gcd(101, 103) = " + gcd(101, 103));
+
+// 5. Power function
+print("\n5. Power function:");
+
+func power(base, exponent) {
+    if (exponent == 0) {
+        return 1;
+    }
+    return base * power(base, exponent - 1);
+}
+
+print("power(2, 8) = " + power(2, 8));
+print("power(5, 3) = " + power(5, 3));
+
+// 6. Recursive counting
+print("\n6. Recursive counting:");
+
+func count_down(n) {
+    if (n <= 0) {
+        print("Blast off!");
+        return;
+    }
+    print(n);
+    count_down(n - 1);
+}
+
+print("Counting down from 5:");
+count_down(5);
+
+// 7. Tail recursion
+print("\n7. Tail recursion:");
+
+func factorial_tail(n, accumulator) {
+    if (n <= 1) {
+        return accumulator;
+    }
+    return factorial_tail(n - 1, n * accumulator);
+}
+
+func factorial_wrapper(n) {
+    return factorial_tail(n, 1);
+}
+
+print("factorial_wrapper(5) = " + factorial_wrapper(5));
+
+print("\nRecursion demonstrations completed!");

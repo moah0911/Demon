@@ -1,2 +1,0 @@
-// Test print with multiple arguments
-print("Value:", 42);

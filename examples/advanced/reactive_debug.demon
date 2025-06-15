@@ -1,0 +1,65 @@
+// Demonstrating reactive programming with debugging in Demon
+
+print("Reactive Programming Debug Demo");
+print("-----------------------------");
+
+// Enable debug mode for reactive programming
+enable_reactive_debug();
+
+// 1. Basic signal with error handling
+print("\n1. Basic signal with error handling:");
+
+// Create a signal with an initial value
+let count = signal(0);
+print("Initial count: " + count.value);
+
+// Create a computed signal that depends on count
+let doubleCount = computed(func() {
+    return count.value * 2;
+});
+
+// Create an effect that runs when count changes
+let stopEffect = effect(func() {
+    print("Effect triggered: count is now " + count.value);
+    print("doubleCount is now " + doubleCount.value);
+});
+
+// Register an error handler
+on_reactive_error(func(error) {
+    print("Reactive error caught: " + error);
+});
+
+// 2. Intentional error to demonstrate error handling
+print("\n2. Intentional error to demonstrate error handling:");
+
+// Create a computed signal that will cause an error
+let errorProne = computed(func() {
+    if (count.value > 5) {
+        // This will cause an error when count > 5
+        return count.value / (count.value - 6);
+    }
+    return count.value;
+});
+
+// Create an effect that uses the error-prone computed
+effect(func() {
+    print("Error-prone value: " + errorProne.value);
+});
+
+// Update count to trigger the error
+print("\nUpdating count to trigger error...");
+count.value = 6;  // This will cause a division by zero
+
+// 3. Cleanup and recovery
+print("\n3. Cleanup and recovery:");
+
+// Update count to a safe value
+count.value = 10;
+
+// Stop the first effect
+stopEffect();
+
+// Disable debug mode
+disable_reactive_debug();
+
+print("\nReactive debugging demonstration completed!");

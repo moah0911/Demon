@@ -1,0 +1,133 @@
+// Demonstrating closures in Demon
+
+print("Closures Demo");
+print("------------");
+
+// 1. Basic closure
+print("\n1. Basic closure:");
+
+func makeGreeter(greeting) {
+    func greet(name) {
+        return greeting + ", " + name + "!";
+    }
+    return greet;
+}
+
+let hello = makeGreeter("Hello");
+let bonjour = makeGreeter("Bonjour");
+
+print(hello("Alice"));
+print(bonjour("Bob"));
+
+// 2. Counter closure
+print("\n2. Counter closure:");
+
+func makeCounter() {
+    let count = 0;
+    func counter() {
+        count = count + 1;
+        return count;
+    }
+    return counter;
+}
+
+let counter1 = makeCounter();
+let counter2 = makeCounter();
+
+print("Counter 1: " + counter1());
+print("Counter 1: " + counter1());
+print("Counter 1: " + counter1());
+print("Counter 2: " + counter2());
+print("Counter 2: " + counter2());
+
+// 3. Closure with parameters
+print("\n3. Closure with parameters:");
+
+func makeMultiplier(factor) {
+    func multiply(number) {
+        return number * factor;
+    }
+    return multiply;
+}
+
+let double = makeMultiplier(2);
+let triple = makeMultiplier(3);
+
+print("double(5) = " + double(5));
+print("triple(5) = " + triple(5));
+
+// 4. Closure with multiple variables
+print("\n4. Closure with multiple variables:");
+
+func makeRangeChecker(min, max) {
+    func checkRange(value) {
+        return value >= min && value <= max;
+    }
+    return checkRange;
+}
+
+let isAdult = makeRangeChecker(18, 65);
+let isChild = makeRangeChecker(0, 17);
+
+print("isAdult(20): " + isAdult(20));
+print("isAdult(16): " + isAdult(16));
+print("isChild(10): " + isChild(10));
+print("isChild(30): " + isChild(30));
+
+// 5. Closure with mutable state
+print("\n5. Closure with mutable state:");
+
+func createBankAccount() {
+    let balance = 0;
+    
+    func deposit(amount) {
+        balance = balance + amount;
+        return "New balance after deposit: " + balance;
+    }
+    
+    func withdraw(amount) {
+        if (amount > balance) {
+            return "Insufficient funds. Balance: " + balance;
+        }
+        balance = balance - amount;
+        return "New balance after withdrawal: " + balance;
+    }
+    
+    func getBalance() {
+        return "Current balance: " + balance;
+    }
+    
+    // Demonstrate the bank account operations
+    print("  Initial " + getBalance());
+    print("  " + deposit(100));
+    print("  " + withdraw(30));
+    print("  Final " + getBalance());
+    
+    return "Bank account operations completed";
+}
+
+print(createBankAccount());
+
+// 6. Function factory
+print("\n6. Function factory:");
+
+func makePowerFunction(exponent) {
+    func power(base) {
+        let result = 1;
+        let i = 0;
+        while (i < exponent) {
+            result = result * base;
+            i = i + 1;
+        }
+        return result;
+    }
+    return power;
+}
+
+let square = makePowerFunction(2);
+let cube = makePowerFunction(3);
+
+print("square(4) = " + square(4));
+print("cube(3) = " + cube(3));
+
+print("\nClosures demonstrations completed!");

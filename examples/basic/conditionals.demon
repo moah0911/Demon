@@ -1,0 +1,83 @@
+// Demonstrating conditionals in Demon
+
+print("Conditional Statements Demo");
+print("-------------------------");
+
+// Simple if statement
+print("\n1. Simple if statement:");
+let x = 10;
+if (x > 5) {
+    print("x is greater than 5");
+}
+
+// If-else statement
+print("\n2. If-else statement:");
+let y = 3;
+if (y > 5) {
+    print("y is greater than 5");
+} else {
+    print("y is not greater than 5");
+}
+
+// If-else if-else statement
+print("\n3. If-else if-else statement:");
+let grade = 85;
+if (grade >= 90) {
+    print("Grade: A");
+} else if (grade >= 80) {
+    print("Grade: B");
+} else if (grade >= 70) {
+    print("Grade: C");
+} else if (grade >= 60) {
+    print("Grade: D");
+} else {
+    print("Grade: F");
+}
+
+// Nested if statements
+print("\n4. Nested if statements:");
+let a = 10;
+let b = 20;
+if (a > 5) {
+    print("a is greater than 5");
+    if (b > 15) {
+        print("b is also greater than 15");
+    } else {
+        print("b is not greater than 15");
+    }
+}
+
+// Logical AND
+print("\n5. Logical AND:");
+let username = "admin";
+let password = "password123";
+if (username == "admin" && password == "password123") {
+    print("Login successful");
+} else {
+    print("Login failed");
+}
+
+// Logical OR
+print("\n6. Logical OR (simulated):");
+let isWeekend = true;
+let isHoliday = false;
+if (isWeekend) {
+    print("No work today!");
+} else if (isHoliday) {
+    print("No work today!");
+} else {
+    print("Time to work!");
+}
+
+// Ternary operator simulation
+print("\n7. Ternary operator simulation:");
+let age = 20;
+let message = "";
+if (age >= 18) {
+    message = "Adult";
+} else {
+    message = "Minor";
+}
+print("Age status: " + message);
+
+print("\nConditional demonstrations completed!");

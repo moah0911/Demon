@@ -27,11 +27,11 @@ func divide(a, b) {
 // Test the calculator functions
 print("Calculator Demo");
 print("---------------");
-print("Addition: 5 + 3 =", add(5, 3));
-print("Subtraction: 10 - 4 =", subtract(10, 4));
-print("Multiplication: 6 * 7 =", multiply(6, 7));
-print("Division: 20 / 5 =", divide(20, 5));
-print("Division by zero:", divide(10, 0));
+print("Addition: 5 + 3 = " + add(5, 3));
+print("Subtraction: 10 - 4 = " + subtract(10, 4));
+print("Multiplication: 6 * 7 = " + multiply(6, 7));
+print("Division: 20 / 5 = " + divide(20, 5));
+print("Division by zero: " + divide(10, 0));
 
 // Calculator with user input simulation
 let x = 8;
@@ -50,4 +50,4 @@ if (operation == "add") {
     result = divide(x, y);
 }
 
-print("Calculated:", x, operation, y, "=", result);
+print("Calculated: " + x + " " + operation + " " + y + " = " + result);

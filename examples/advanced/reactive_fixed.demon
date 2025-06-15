@@ -1,0 +1,79 @@
+// Demonstrating reactive programming in Demon
+
+print("Reactive Programming Demo");
+print("----------------------");
+
+// 1. Basic counter example
+print("\n1. Basic counter example:");
+
+// Create a counter variable
+let counter = 0;
+print("Initial counter: " + counter);
+
+// Update the counter
+counter = counter + 1;
+print("Counter after increment: " + counter);
+
+counter = counter + 1;
+print("Counter after another increment: " + counter);
+
+// 2. Closure-based reactive pattern
+print("\n2. Closure-based reactive pattern:");
+
+// Create a state container with a getter and setter
+func createCounter(initialValue) {
+    let count = initialValue;
+    
+    // Return a counter function that can both get and set
+    func counter(newValue) {
+        if (newValue != nil) {
+            count = newValue;
+        }
+        return count;
+    }
+    
+    return counter;
+}
+
+// Create a counter
+let count = createCounter(0);
+
+// Create a derived value function
+func getDoubleCount() {
+    return count() * 2;
+}
+
+// Create a render function
+func render() {
+    print("Count: " + count());
+    print("Double count: " + getDoubleCount());
+}
+
+// Initial render
+render();
+
+// Update state and re-render
+print("\nUpdating state...");
+count(1);
+render();
+
+print("\nUpdating state again...");
+count(2);
+render();
+
+// 3. Multiple counters demonstration
+print("\n3. Multiple counters:");
+
+let counter1 = createCounter(10);
+let counter2 = createCounter(20);
+
+print("Counter 1: " + counter1());
+print("Counter 2: " + counter2());
+
+counter1(11);
+counter2(21);
+
+print("After update - Counter 1: " + counter1());
+print("After update - Counter 2: " + counter2());
+
+print("\nReactive programming demonstration completed!");

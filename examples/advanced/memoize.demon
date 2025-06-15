@@ -1,0 +1,80 @@
+// Demonstrating memoization in Demon
+
+print("Memoization Demo");
+print("--------------");
+
+// 1. Fibonacci without memoization
+print("\n1. Fibonacci without memoization:");
+
+func fibonacci(n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// Time the execution
+let start = clock();
+print("fibonacci(20) = " + fibonacci(20));
+let end = clock();
+print("Time taken: " + (end - start) + " seconds");
+
+// 2. Factorial with memoization
+print("\n2. Factorial with memoization:");
+
+// We'll use a simple manual memoization approach
+let memo = {};
+
+func memoized_factorial(n) {
+    // Check if we've already computed this value
+    if (n in memo) {
+        return memo[n];
+    }
+    
+    // Base case
+    if (n <= 1) {
+        return 1;
+    }
+    
+    // Compute and store the result
+    let result = n * memoized_factorial(n - 1);
+    memo[n] = result;
+    return result;
+}
+
+// Test the memoized function
+print("memoized_factorial(5) = " + memoized_factorial(5));
+print("memoized_factorial(10) = " + memoized_factorial(10));
+
+// 3. Memoized Fibonacci
+print("\n3. Memoized Fibonacci:");
+
+let fib_memo = {};
+
+func memoized_fibonacci(n) {
+    // Check if we've already computed this value
+    if (n in fib_memo) {
+        return fib_memo[n];
+    }
+    
+    // Base case
+    if (n <= 1) {
+        return n;
+    }
+    
+    // Compute and store the result
+    let result = memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2);
+    fib_memo[n] = result;
+    return result;
+}
+
+// Time the execution
+start = clock();
+print("memoized_fibonacci(20) = " + memoized_fibonacci(20));
+end = clock();
+print("Time taken: " + (end - start) + " seconds");
+
+// Try a larger value that would be impractical without memoization
+print("memoized_fibonacci(40) = " + memoized_fibonacci(40));
+
+print("\nMemoization demonstrations completed!");

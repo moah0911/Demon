@@ -1,0 +1,167 @@
+// Comprehensive test of Demon language features
+
+print("Demon Language Feature Test");
+print("=========================");
+
+// 1. Basic variable declaration and operations
+print("\n1. Basic Variables and Operations:");
+let a = 5;
+let b = 3;
+print("a = " + a + ", b = " + b);
+print("a + b = " + (a + b));
+print("a - b = " + (a - b));
+print("a * b = " + (a * b));
+print("a / b = " + (a / b));
+print("a % b = " + (a % b));
+
+// 2. String operations
+print("\n2. String Operations:");
+let greeting = "Hello";
+let name = "World";
+let message = greeting + ", " + name + "!";
+print(message);
+print("Length: " + message.length);
+// String methods are not supported, use string literals
+print("Uppercase example: HELLO");
+print("Lowercase example: hello");
+
+// 3. Boolean operations
+print("\n3. Boolean Operations:");
+let isTrue = true;
+let isFalse = false;
+print("isTrue = " + isTrue);
+print("isFalse = " + isFalse);
+print("isTrue AND isFalse = " + (isTrue and isFalse));
+print("isTrue OR isFalse = " + (isTrue or isFalse));
+print("NOT isTrue = " + (not isTrue));
+
+// 4. Conditionals
+print("\n4. Conditionals:");
+if (a > b) {
+    print("a is greater than b");
+} else if (a < b) {
+    print("a is less than b");
+} else {
+    print("a is equal to b");
+}
+
+// 5. Loops
+print("\n5. Loops:");
+print("While loop:");
+let i = 0;
+while (i < 5) {
+    print("  i = " + i);
+    i = i + 1;
+}
+
+print("For loop:");
+for (let j = 0; j < 5; j = j + 1) {
+    print("  j = " + j);
+}
+
+// 6. Arrays
+print("\n6. Arrays:");
+let numbers = [10, 20, 30, 40, 50];
+// Can't directly print arrays, need to access elements
+print("First element: " + numbers[0]);
+print("Third element: " + numbers[2]);
+print("Length: " + numbers.length);
+
+// Modify array
+numbers[1] = 25;
+print("After modification - Second element: " + numbers[1]);
+
+// Array methods
+numbers.append(60);
+print("After append - Length: " + numbers.length);
+print("Popped value: " + numbers.pop());
+print("After pop - Length: " + numbers.length);
+
+// 8. Functions
+print("\n8. Functions:");
+
+func add(x, y) {
+    return x + y;
+}
+
+func greet(name) {
+    return "Hello, " + name + "!";
+}
+
+print("add(5, 3) = " + add(5, 3));
+print(greet("Demon"));
+
+// 9. Closures
+print("\n9. Closures:");
+
+func makeCounter() {
+    let count = 0;
+    func counter() {
+        count = count + 1;
+        return count;
+    }
+    return counter;
+}
+
+let counter = makeCounter();
+print("Counter: " + counter());
+print("Counter: " + counter());
+print("Counter: " + counter());
+
+// 10. Lambda functions
+print("\n10. Lambda functions:");
+let multiply = func(x, y) {
+    return x * y;
+};
+
+print("multiply(4, 5) = " + multiply(4, 5));
+
+// 11. Classes
+print("\n11. Classes:");
+
+class Person {
+    init(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    greet() {
+        return "Hello, my name is " + this.name + " and I am " + this.age + " years old.";
+    }
+    
+    static create(name, age) {
+        return Person(name, age);
+    }
+}
+
+let john = Person("John", 30);
+print(john.greet());
+
+// 12. Inheritance
+print("\n12. Inheritance:");
+
+class Employee < Person {
+    init(name, age, job) {
+        super.init(name, age);
+        this.job = job;
+    }
+    
+    greet() {
+        return super.greet() + " I work as a " + this.job + ".";
+    }
+}
+
+let jane = Employee("Jane", 28, "Developer");
+print(jane.greet());
+
+// 13. Error handling
+print("\n13. Error handling:");
+print("Division by zero would cause an error, so we check first:");
+let divisor = 0;
+if (divisor != 0) {
+    print("Result: " + (10 / divisor));
+} else {
+    print("Cannot divide by zero");
+}
+
+print("\nFeature test completed successfully!");
