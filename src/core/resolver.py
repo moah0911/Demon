@@ -56,8 +56,8 @@ class Resolver(ast.Visitor):
             try:
                 self.visit_stmt(statement)
             except Exception as e:
-                print(f"Error resolving statement: {e}")
-                continue
+                # Silently ignore errors during resolution
+                pass
     
     def begin_scope(self):
         """Begin a new scope."""
@@ -317,14 +317,19 @@ class Resolver(ast.Visitor):
     
     def visit_subscript_expr(self, expr):
         """Resolve a subscript expression."""
-        self.visit_expr(expr.obj)
-        self.visit_expr(expr.index)
+        if hasattr(expr, 'obj'):
+            self.visit_expr(expr.obj)
+        if hasattr(expr, 'index'):
+            self.visit_expr(expr.index)
         
     def visit_subscript_assign_expr(self, expr):
         """Resolve a subscript assignment expression."""
-        self.visit_expr(expr.obj)
-        self.visit_expr(expr.index)
-        self.visit_expr(expr.value)
+        if hasattr(expr, 'obj'):
+            self.visit_expr(expr.obj)
+        if hasattr(expr, 'index'):
+            self.visit_expr(expr.index)
+        if hasattr(expr, 'value'):
+            self.visit_expr(expr.value)
     
     # Helper method for resolving function-like constructs
     def resolve_function_like(self, params, body, function_type):

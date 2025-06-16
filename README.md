@@ -22,7 +22,9 @@ print(greet("Demon"));
 - **Clean, Readable Syntax** - Inspired by JavaScript, Python, and Rust
 - **First-class Functions** - Functions as values, closures, and higher-order functions
 - **Dynamic Typing** - Flexible type system with runtime type checking
-- **Rich Control Flow** - If/else, while loops, and blocks
+- **Rich Control Flow** - If/else, while loops, and for loops
+- **Object-Oriented Programming** - Classes with inheritance
+- **Closures** - Powerful lexical scoping and state encapsulation
 - **Error Handling** - Graceful error handling patterns
 
 ## Language Rules
@@ -31,12 +33,14 @@ print(greet("Demon"));
 2. **Functions**: Defined using the `func` keyword
 3. **Variables**: Declared using `let` keyword
 4. **Constants**: Declared using `const` keyword
-5. **Logical Operators**: Use `&&` for AND and `||` for OR (not `and` and `or`)
+5. **Logical Operators**: Use `and` for AND and `or` for OR (not `&&` and `||`)
 6. **String Concatenation**: Use `+` operator to concatenate strings
 7. **Comments**: Use `//` for single-line comments
 8. **Blocks**: Use `{` and `}` to define code blocks
 9. **Conditionals**: Use `if`, `else if`, and `else` for conditional logic
 10. **Loops**: Use `while`, `for`, and `for-in` loops for iteration
+11. **Classes**: Use `class` keyword with `init` method for constructors
+12. **Inheritance**: Use `<` symbol for class inheritance
 
 ## Language Examples
 
@@ -70,15 +74,9 @@ while (i <= 5) {
 for (let j = 1; j <= 5; j = j + 1) {
     print(j);
 }
-
-// For-each loops
-let items = ["apple", "banana", "cherry"];
-for (let item in items) {
-    print(item);
-}
 ```
 
-### Functions
+### Functions and Closures
 
 ```demon
 // Function definition
@@ -86,45 +84,107 @@ func add(a, b) {
     return a + b;
 }
 
-// Higher-order functions
-func applyTwice(f, x) {
-    return f(f(x));
+// Closures
+func makeCounter() {
+    let count = 0;
+    func counter() {
+        count = count + 1;
+        return count;
+    }
+    return counter;
 }
 
-func addOne(x) {
-    return x + 1;
+let counter = makeCounter();
+print(counter()); // Outputs: 1
+print(counter()); // Outputs: 2
+```
+
+### Classes and Inheritance
+
+```demon
+// Class definition
+class Person {
+    init(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    greet() {
+        return "Hello, my name is " + this.name + " and I am " + this.age + " years old.";
+    }
 }
 
-print(applyTwice(addOne, 5)); // Outputs: 7
+// Inheritance
+class Employee < Person {
+    init(name, age, job) {
+        super.init(name, age);
+        this.job = job;
+    }
+    
+    greet() {
+        return super.greet() + " I work as a " + this.job + ".";
+    }
+}
+
+let jane = Employee("Jane", 28, "Developer");
+print(jane.greet());
 ```
 
 ### Data Structures
 
 ```demon
-// Lists
-let numbers = [1, 2, 3, 4, 5];
-print("List length:", len(numbers));
+// Arrays
+let numbers = [10, 20, 30, 40, 50];
+print("First element: " + numbers[0]);
+print("Length: " + numbers.length);
 
-// Simple objects
-let person = {"name": "John", "age": 30};
+// Array methods
+numbers.append(60);
+print("Popped value: " + numbers.pop());
+numbers.insert(1, 15);
+numbers.remove(30);
 ```
+
+## Advanced Features
+
+Demon includes several advanced features for more complex programming tasks:
+
+- **Closures**: Create functions that encapsulate state
+- **Array Operations**: Methods like append, pop, insert, and remove
+- **String Manipulation**: Methods for case conversion, searching, and transformation
+- **Pattern Matching**: Conditional logic based on value patterns
+- **Reactive Programming**: Build reactive data flows (experimental)
+
+For more details, see [ADVANCED_FEATURES.md](docs/ADVANCED_FEATURES.md).
 
 ## Project Structure
 
 - **src/**: Core implementation of the language
   - **core/**: Core language components (parser, interpreter, VM)
   - **stdlib/**: Standard library implementations
-  - **ide_support/**: IDE integration tools
+  - **ide_support/**: IDE integration tools and VSCode extension
   - **tools/**: Development tools (CLI, debugger, package manager)
 - **examples/**: Example Demon programs
+  - **basic/**: Simple language examples
+  - **advanced/**: Advanced programming patterns
+  - **testing/**: Comprehensive test files
 - **docs/**: Documentation for various aspects of the language
 
 ## Running Demon Programs
 
 ```bash
 # Run a Demon script
-python run.py examples/hello.demon
+python run.py examples/basic/hello.demon
+
+# Run comprehensive tests
+python run.py examples/testing/comprehensive_test.demon
 ```
+
+## Known Limitations
+
+- Static methods on classes are not supported; use factory functions instead
+- Limited standard library compared to mature languages
+- Performance optimizations are still in progress
 
 ## Contributing
 
