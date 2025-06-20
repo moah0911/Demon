@@ -1,0 +1,13 @@
+// Test throw statement
+
+print("Throw Statement Test");
+
+try {
+    print("About to throw an exception...");
+    throw "Custom error message";
+    print("This should not be printed");
+} catch (e) {
+    print("Caught exception with message: " + e);
+}
+
+print("Test completed");

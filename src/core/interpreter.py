@@ -9,6 +9,8 @@ from typing import Dict, List, Any, Optional, Union, Tuple
 from .tokens import Token, TokenType
 from . import ast
 from .subscript_expr import SubscriptExpr
+from .static_methods import patch_interpreter
+from .exceptions import DemonException, convert_python_exception
 
 # Import standard library features
 try:
@@ -29,6 +31,13 @@ class RuntimeError(Exception):
         self.message = message
         self.line = token.line if token else 0
         super().__init__(message)
+
+class ExceptionThrown(Exception):
+    """Exception thrown by the user code."""
+    
+    def __init__(self, exception: DemonException):
+        self.exception = exception
+        super().__init__(str(exception))
 
 class Return(Exception):
     """Return statement exception."""
@@ -409,6 +418,56 @@ class Interpreter(ast.Visitor):
     
     def visit_continue_stmt(self, stmt: ast.Continue):
         raise Continue()
+        
+    def visit_try_stmt(self, stmt: ast.Try):
+        # Execute try block
+        try:
+            self.execute(stmt.try_block)
+        except ExceptionThrown as thrown:
+            # Handle caught exception
+            exception = thrown.exception
+            handled = False
+            # Handle caught exception
+            exception = thrown.exception
+            handled = False
+            
+            # Check each catch clause
+            for exception_type, exception_var, catch_block in stmt.catch_clauses:
+                # If no exception type specified, catch all exceptions
+                if exception_type is None:
+                    handled = True
+                # Otherwise, check if the exception matches the specified type
+                elif exception_type.lexeme == exception.__class__.__name__:
+                    handled = True
+                
+                if handled:
+                    # Create a new environment for the catch block
+                    environment = Environment(self.environment)
+                    
+                    # Bind exception to variable if specified
+                    if exception_var is not None:
+                        environment.define(exception_var.name.lexeme, exception)
+                    else:
+                        # Always bind to 'e' for convenience
+                        environment.define("e", exception)
+                    
+                    # Execute catch block in the new environment
+                    previous = self.environment
+                    try:
+                        self.environment = environment
+                        self.execute(catch_block)
+                    finally:
+                        self.environment = previous
+                    break
+            
+            # If no catch clause handled the exception and there's no finally block,
+            # re-throw the exception
+            if not handled and stmt.finally_block is None:
+                raise thrown
+        finally:
+            # Execute finally block if present
+            if stmt.finally_block is not None:
+                self.execute(stmt.finally_block)
     
     def visit_var_stmt(self, stmt: ast.Var):
         value = None
@@ -538,7 +597,8 @@ class Interpreter(ast.Visitor):
         elif expr.operator.type == TokenType.SLASH:
             self.check_number_operands(expr.operator, left, right)
             if right == 0:
-                raise RuntimeError(expr.operator, "Division by zero.")
+                exception = DemonException("Division by zero.", expr.operator)
+                raise ExceptionThrown(exception)
             return left / right
         elif expr.operator.type == TokenType.STAR:
             self.check_number_operands(expr.operator, left, right)
@@ -909,3 +969,43 @@ class Interpreter(ast.Visitor):
         if isinstance(left, (int, float)) and isinstance(right, (int, float)):
             return
         raise RuntimeError(operator, "Operands must be numbers.")
+
+    def visit_throw_stmt(self, stmt: ast.Throw):
+        value = self.evaluate(stmt.value)
+        
+        # If the value is already a DemonException, throw it
+        if isinstance(value, DemonException):
+            exception = value
+        # Otherwise, create a new DemonException with the value as the message
+        else:
+            exception = DemonException(str(value), stmt.keyword)
+        
+        # Add current location to traceback
+        if hasattr(self, 'current_function'):
+            exception.add_traceback_entry(
+                self.current_function.name.lexeme if hasattr(self.current_function, 'name') else '<anonymous>',
+                stmt.keyword.line
+            )
+        
+        raise ExceptionThrown(exception)
+    def visit_throw_stmt(self, stmt: ast.Throw):
+        value = self.evaluate(stmt.value)
+        
+        # If the value is already a DemonException, throw it
+        if isinstance(value, DemonException):
+            exception = value
+        # Otherwise, create a new DemonException with the value as the message
+        else:
+            exception = DemonException(str(value), stmt.keyword)
+        
+        # Add current location to traceback
+        if hasattr(self, 'current_function'):
+            exception.add_traceback_entry(
+                self.current_function.name.lexeme if hasattr(self.current_function, 'name') else '<anonymous>',
+                stmt.keyword.line
+            )
+        
+        raise ExceptionThrown(exception)
+
+# Apply the static methods patch to the Interpreter class
+Interpreter = patch_interpreter(Interpreter)

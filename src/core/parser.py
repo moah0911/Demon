@@ -139,6 +139,10 @@ class Parser:
             return self.break_statement()
         if self.match(TokenType.CONTINUE):
             return self.continue_statement()
+        if self.match(TokenType.TRY):
+            return self.try_statement()
+        if self.match(TokenType.THROW):
+            return self.throw_statement()
         if self.match(TokenType.LEFT_BRACE):
             return ast.Block(self.block())
         
@@ -269,6 +273,54 @@ class Parser:
         keyword = self.previous()
         self.consume(TokenType.SEMICOLON, "Expect ';' after 'continue'.")
         return ast.Continue(keyword)
+        
+    def try_statement(self) -> ast.Stmt:
+        """Parse a try statement."""
+        # Parse try block
+        self.consume(TokenType.LEFT_BRACE, "Expect '{' after 'try'.")
+        try_block = ast.Block(self.block())
+        
+        # Parse catch clauses
+        catch_clauses = []
+        while self.match(TokenType.CATCH):
+            self.consume(TokenType.LEFT_PAREN, "Expect '(' after 'catch'.")
+            
+            # Parse exception type (optional)
+            exception_type = None
+            if self.check(TokenType.IDENTIFIER) and not self.check_next(TokenType.RIGHT_PAREN):
+                exception_type = self.consume(TokenType.IDENTIFIER, "Expect exception type.")
+            
+            # Parse exception variable (optional)
+            exception_var = None
+            if self.check(TokenType.IDENTIFIER):
+                exception_var = ast.Variable(self.consume(TokenType.IDENTIFIER, "Expect exception variable name."))
+            
+            self.consume(TokenType.RIGHT_PAREN, "Expect ')' after catch parameters.")
+            
+            # Parse catch block
+            self.consume(TokenType.LEFT_BRACE, "Expect '{' after catch parameters.")
+            catch_block = ast.Block(self.block())
+            
+            catch_clauses.append((exception_type, exception_var, catch_block))
+        
+        # Parse finally block (optional)
+        finally_block = None
+        if self.match(TokenType.FINALLY):
+            self.consume(TokenType.LEFT_BRACE, "Expect '{' after 'finally'.")
+            finally_block = ast.Block(self.block())
+        
+        # Ensure there's at least one catch or finally
+        if not catch_clauses and not finally_block:
+            self.error(self.previous(), "Expect 'catch' or 'finally' after try block.")
+        
+        return ast.Try(try_block, catch_clauses, finally_block)
+    
+    def throw_statement(self) -> ast.Stmt:
+        """Parse a throw statement."""
+        keyword = self.previous()
+        value = self.expression()
+        self.consume(TokenType.SEMICOLON, "Expect ';' after throw expression.")
+        return ast.Throw(keyword, value)
     
     def block(self) -> List[ast.Stmt]:
         """Parse a block of statements."""
@@ -594,7 +646,17 @@ class Parser:
                 TokenType.WHILE,
                 TokenType.PRINT,
                 TokenType.RETURN,
+                TokenType.TRY,
+                TokenType.CATCH,
+                TokenType.FINALLY,
+                TokenType.THROW,
             ]:
                 return
             
             self.advance()
+            
+    def check_next(self, type: TokenType) -> bool:
+        """Check if the next token is of the given type."""
+        if self.is_at_end() or self.current + 1 >= len(self.tokens):
+            return False
+        return self.tokens[self.current + 1].type == type

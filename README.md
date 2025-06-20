@@ -25,7 +25,7 @@ print(greet("Demon"));
 - **Rich Control Flow** - If/else, while loops, and for loops
 - **Object-Oriented Programming** - Classes with inheritance
 - **Closures** - Powerful lexical scoping and state encapsulation
-- **Error Handling** - Graceful error handling patterns
+- **Exception Handling** - Try/catch/finally blocks for robust error management
 
 ## Language Rules
 
@@ -41,6 +41,7 @@ print(greet("Demon"));
 10. **Loops**: Use `while`, `for`, and `for-in` loops for iteration
 11. **Classes**: Use `class` keyword with `init` method for constructors
 12. **Inheritance**: Use `<` symbol for class inheritance
+13. **Exception Handling**: Use `try`, `catch`, and `finally` blocks
 
 ## Language Examples
 
@@ -112,6 +113,11 @@ class Person {
     greet() {
         return "Hello, my name is " + this.name + " and I am " + this.age + " years old.";
     }
+    
+    // Static method
+    static create(name, age) {
+        return Person(name, age);
+    }
 }
 
 // Inheritance
@@ -126,6 +132,8 @@ class Employee < Person {
     }
 }
 
+// Create instances
+let john = Person.create("John", 30);  // Using static method
 let jane = Employee("Jane", 28, "Developer");
 print(jane.greet());
 ```
@@ -145,6 +153,32 @@ numbers.insert(1, 15);
 numbers.remove(30);
 ```
 
+### Exception Handling
+
+```demon
+// Try-catch-finally
+try {
+    print("Attempting division...");
+    let result = 10 / 0;  // This will throw an exception
+    print("This line won't execute");
+} catch (e) {
+    print("Caught exception");
+} finally {
+    print("This always executes");
+}
+
+// Exception propagation
+func riskyFunction() {
+    let result = 5 / 0;  // Throws an exception
+}
+
+try {
+    riskyFunction();  // Call function that throws
+} catch (e) {
+    print("Caught exception from function");
+}
+```
+
 ## Advanced Features
 
 Demon includes several advanced features for more complex programming tasks:
@@ -154,8 +188,11 @@ Demon includes several advanced features for more complex programming tasks:
 - **String Manipulation**: Methods for case conversion, searching, and transformation
 - **Pattern Matching**: Conditional logic based on value patterns
 - **Reactive Programming**: Build reactive data flows (experimental)
+- **Automatic Memoization**: Cache function results for improved performance
+- **Static Methods**: Class-level methods that don't require instances
+- **Exception Handling**: Try/catch/finally blocks with error handling
 
-For more details, see [ADVANCED_FEATURES.md](docs/ADVANCED_FEATURES.md).
+For more details, see [ADVANCED_FEATURES.md](docs/ADVANCED_FEATURES.md), [MEMOIZATION.md](docs/MEMOIZATION.md), [STATIC_METHODS.md](docs/STATIC_METHODS.md), and [EXCEPTION_HANDLING.md](docs/EXCEPTION_HANDLING.md).
 
 ## Project Structure
 
@@ -182,9 +219,9 @@ python run.py examples/testing/comprehensive_test.demon
 
 ## Known Limitations
 
-- Static methods on classes are not supported; use factory functions instead
 - Limited standard library compared to mature languages
 - Performance optimizations are still in progress
+- Custom exception types are not yet fully supported
 
 ## Contributing
 
@@ -193,3 +230,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to th
 ## License
 
 MIT License
+# Implementation Documentation
+
+For details on how Demon is implemented and executed, see:
+
+- [IMPLEMENTATION.md](docs/IMPLEMENTATION.md) - Overview of the implementation approach
+- [COMPILATION_PROCESS.md](docs/COMPILATION_PROCESS.md) - How code is compiled and executed
+- [PYTHON_RATIONALE.md](docs/PYTHON_RATIONALE.md) - Why Python was chosen
+- [BYTECODE_FUTURE.md](docs/BYTECODE_FUTURE.md) - Future bytecode VM plans

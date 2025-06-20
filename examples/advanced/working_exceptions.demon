@@ -1,0 +1,55 @@
+// Working exception handling examples
+
+print("Exception Handling Examples");
+print("=========================");
+
+// 1. Basic try-catch with division by zero
+print("\n1. Division by zero:");
+try {
+    print("  Attempting division by zero...");
+    let result = 10 / 0;
+    print("  This line will not be executed");
+} catch (e) {
+    print("  Caught error");
+}
+
+// 2. Try-finally (no exception)
+print("\n2. Try-finally (no exception):");
+try {
+    print("  Executing try block...");
+    print("  No exception thrown");
+} finally {
+    print("  Finally block always executes");
+}
+
+// 3. Try-finally (with exception)
+print("\n3. Try-finally (with exception):");
+try {
+    try {
+        print("  Executing try block...");
+        let result = 5 / 0;
+        print("  This line will not be executed");
+    } finally {
+        print("  Finally block executes even with exception");
+    }
+} catch (e) {
+    print("  Outer catch block caught the exception");
+}
+
+// 4. Nested try-catch
+print("\n4. Nested try-catch:");
+try {
+    print("  Outer try block");
+    try {
+        print("  Inner try block");
+        let result = 1 / 0;
+        print("  This line will not be executed");
+    } catch (e) {
+        print("  Inner catch block caught the exception");
+    }
+    print("  Execution continues in outer try block");
+} catch (e) {
+    print("  This won't execute since exception was caught");
+}
+
+print("\nAll examples completed successfully!");

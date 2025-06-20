@@ -1,0 +1,14 @@
+// Simple exception handling test
+
+print("Simple Exception Test");
+
+// Just use a division by zero error instead of throw
+try {
+    print("Dividing by zero...");
+    let result = 10 / 0;
+    print("This should not be printed");
+} catch (e) {
+    print("Caught division by zero error");
+}
+
+print("Test completed");

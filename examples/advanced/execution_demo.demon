@@ -1,0 +1,69 @@
+// Demon Execution Process Demonstration
+// This file shows how Demon code is processed and executed
+
+// 1. Lexical Analysis (Scanning)
+// The scanner breaks this line into tokens:
+// [PRINT, LEFT_PAREN, STRING("Scanning phase"), RIGHT_PAREN, SEMICOLON]
+print("Scanning phase");
+
+// 2. Parsing
+// This expression is parsed into an AST:
+//   BinaryExpr
+//   ├── left: NumberLiteral(5)
+//   ├── operator: PLUS
+//   └── right: NumberLiteral(3)
+print("Parsing phase: 5 + 3 = " + (5 + 3));
+
+// 3. Resolution
+// Variable references are resolved to their declarations
+print("Resolution phase");
+let x = 10;
+{
+    let x = 20;  // Different 'x' than outer scope
+    print("Inner x: " + x);  // Resolves to inner 'x'
+}
+print("Outer x: " + x);  // Resolves to outer 'x'
+
+// 4. Interpretation
+// Code is executed by walking the AST
+print("Interpretation phase");
+
+// Function declaration and execution
+func factorial(n) {
+    // This demonstrates recursion and control flow
+    if (n <= 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+// Calculate factorial of 5
+print("Factorial of 5: " + factorial(5));
+
+// 5. Error handling demonstration
+print("\nError handling demonstration");
+
+try {
+    print("Attempting division by zero...");
+    let result = 10 / 0;
+    print("This won't be executed");
+} catch (e) {
+    print("Caught error: Division by zero");
+}
+
+// 6. Closures demonstrate environment handling
+print("\nClosure demonstration");
+func makeCounter() {
+    let count = 0;
+    func increment() {
+        count = count + 1;
+        return count;
+    }
+    return increment;
+}
+
+let counter = makeCounter();
+print("Count: " + counter());  // 1
+print("Count: " + counter());  // 2
+
+print("\nExecution demo completed!");

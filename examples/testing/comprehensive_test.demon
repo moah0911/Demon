@@ -207,11 +207,8 @@ print("Match result: " + result);
 
 // 16. Static methods
 print("\n16. Static methods:");
-// Create a person using a factory function instead of static method
-func createPerson(name, age) {
-    return Person(name, age);
-}
-let staticPerson = createPerson("Static", 25);
+// Create a person using the static method directly
+let staticPerson = Person.create("Static", 25);
 print(staticPerson.greet());
 
 // 17. Try using forEach loop if supported

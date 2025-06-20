@@ -284,3 +284,18 @@ class Class(Stmt):
         self.superclass = superclass
         self.methods = methods
         self.static_methods = static_methods
+
+class Try(Stmt):
+    """Try statement."""
+    
+    def __init__(self, try_block: Block, catch_clauses: List[Tuple[Token, Optional[Variable], Block]], finally_block: Optional[Block]):
+        self.try_block = try_block
+        self.catch_clauses = catch_clauses  # List of (exception_type, variable, block)
+        self.finally_block = finally_block
+
+class Throw(Stmt):
+    """Throw statement."""
+    
+    def __init__(self, keyword: Token, value: Expr):
+        self.keyword = keyword
+        self.value = value

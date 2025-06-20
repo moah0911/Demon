@@ -1,0 +1,85 @@
+// Exception handling in Demon
+
+print("Exception Handling Demo");
+print("=====================");
+
+// Basic try-catch
+print("\n1. Basic try-catch:");
+try {
+    print("  Attempting division by zero...");
+    let result = 10 / 0;
+    print("  This line will not be executed");
+} catch (e) {
+    print("  Caught exception: " + e);
+}
+
+// Multiple catch clauses
+print("\n2. Multiple catch clauses:");
+try {
+    print("  Throwing a specific exception...");
+    throw "IndexOutOfBounds";
+} catch (ValueError e) {
+    print("  Caught ValueError: " + e);
+} catch (e) {
+    print("  Caught other exception: " + e);
+}
+
+// Try-catch-finally
+print("\n3. Try-catch-finally:");
+try {
+    print("  Executing try block...");
+    print("  No exception thrown");
+} catch (e) {
+    print("  This catch block will not execute");
+} finally {
+    print("  Finally block always executes");
+}
+
+// Finally with exception
+print("\n4. Finally with exception:");
+try {
+    try {
+        print("  Throwing exception in try block...");
+        throw "TestException";
+    } finally {
+        print("  Finally block executes before exception propagates");
+    }
+} catch (e) {
+    print("  Outer catch block caught: " + e);
+}
+
+// Custom exception handling
+print("\n5. Custom exception handling:");
+
+func divide(a, b) {
+    if (b == 0) {
+        throw "DivisionByZero: Cannot divide by zero";
+    }
+    return a / b;
+}
+
+try {
+    print("  Calling divide(10, 2): " + divide(10, 2));
+    print("  Calling divide(10, 0)...");
+    let result = divide(10, 0);
+    print("  This line will not be executed");
+} catch (e) {
+    print("  Caught exception: " + e);
+}
+
+// Nested try-catch blocks
+print("\n6. Nested try-catch blocks:");
+try {
+    print("  Outer try block");
+    try {
+        print("  Inner try block");
+        throw "InnerException";
+    } catch (e) {
+        print("  Inner catch block caught: " + e);
+        throw "OuterException";
+    }
+} catch (e) {
+    print("  Outer catch block caught: " + e);
+}
+
+print("\nException handling demo completed!");

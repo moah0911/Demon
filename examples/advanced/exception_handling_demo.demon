@@ -1,0 +1,69 @@
+// Exception handling demonstration
+
+print("Exception Handling in Demon");
+print("=========================");
+
+// 1. Basic try-catch with division by zero
+print("\n1. Basic try-catch:");
+try {
+    print("  Attempting division by zero...");
+    let result = 10 / 0;
+    print("  This line will not be executed");
+} catch (e) {
+    print("  Caught error");
+}
+
+// 2. Try-finally pattern
+print("\n2. Try-finally pattern:");
+try {
+    print("  Opening a resource...");
+    // Simulate resource usage
+    print("  Using the resource...");
+} finally {
+    print("  Cleanup: resource closed");
+}
+
+// 3. Try-catch-finally
+print("\n3. Try-catch-finally:");
+try {
+    print("  Attempting risky operation...");
+    // Simulate an error
+    let x = 10 / 0;
+} catch (e) {
+    print("  Error handled");
+} finally {
+    print("  Cleanup code executed");
+}
+
+// 4. Nested try-catch blocks
+print("\n4. Nested try-catch blocks:");
+try {
+    print("  Outer try block");
+    try {
+        print("  Inner try block");
+        let result = 1 / 0;
+    } catch (e) {
+        print("  Inner catch: caught division by zero");
+    }
+    print("  Continuing in outer block");
+} catch (e) {
+    print("  Outer catch: this won't execute");
+}
+
+// 5. Exception propagation
+print("\n5. Exception propagation:");
+func riskyFunction() {
+    print("  In risky function");
+    let result = 5 / 0;
+    print("  This won't execute");
+}
+
+try {
+    print("  Calling risky function...");
+    riskyFunction();
+    print("  This won't execute");
+} catch (e) {
+    print("  Caught exception from function call");
+}
+
+print("\nException handling demo completed!");
