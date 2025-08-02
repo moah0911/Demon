@@ -1,0 +1,36 @@
+[package]
+name = "demon-lang"
+version = "0.1.0"
+edition = "2021"
+description = "A dynamic programming language with a clean syntax and powerful features"
+authors = ["moah0911 <stormshots0911@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/yourusername/demon-lang"
+readme = "README.md"
+keywords = ["programming-language", "interpreter", "compiler"]
+categories = ["command-line-utilities", "development-tools"]
+
+[lib]
+name = "demon"
+path = "src/lib.rs"
+
+[[bin]]
+name = "Demon"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.0", features = ["derive"] }
+log = "0.4"
+pretty_env_logger = "0.5.0"
+thiserror = "1.0"
+colored = "2.0"
+rustyline = { version = "11.0", features = ["with-file-history"] }
+
+[dev-dependencies]
+assert_cmd = "2.0"
+predicates = "2.1"
+tempfile = "3.3"
+
+[profile.release]
+lto = true
+codegen-units = 1
