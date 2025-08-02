@@ -16,6 +16,13 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            overflow-x: hidden;
+        }
+        .bg-anim {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
         }
         .logo {
             width: 160px;
@@ -40,13 +47,112 @@
             color: #444;
             font-size: 0.95rem;
         }
+    .features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+        justify-content: center;
+        margin: 32px 0 0 0;
+        z-index: 1;
+    }
+    .feature-card {
+        background: #232326;
+        border-radius: 14px;
+        box-shadow: 0 0 16px #ff2d2d22;
+        padding: 24px 32px;
+        min-width: 220px;
+        max-width: 320px;
+        color: #ff6b6b;
+        font-size: 1.1rem;
+        text-align: left;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+        transform: translateY(-6px) scale(1.03);
+        box-shadow: 0 0 32px #ff2d2d55;
+    }
     </style>
 </head>
 <body>
+    <canvas class="bg-anim"></canvas>
     <img src="Demon.png" alt="Demon Logo" class="logo">
     <h1>Demon Language</h1>
-    <p>Welcome to the Demon programming language!<br>
-    Fast, modern, and powerful. Explore the code, try the examples, and join the community.</p>
+    <p>Welcome to <b>Demon</b>, a fast, modern, and powerful programming language.<br>
+    <span style="color:#fff;">Unleash your creativity with expressive syntax, robust features, and blazing performance.</span></p>
+    <div style="background:#232326;padding:24px 32px;border-radius:16px;box-shadow:0 0 16px #ff2d2d22;margin:32px 0 24px 0;max-width:700px;">
+        <h2 style="color:#ff2d2d;margin-top:0;">Why Demon?</h2>
+        <ul style="color:#ff6b6b;font-size:1.1rem;line-height:1.7;">
+            <li>🔥 <b>Performance</b>: Compiled for speed, optimized for modern systems.</li>
+            <li>🧩 <b>Expressive Syntax</b>: Write less, do more, with clean and readable code.</li>
+            <li>🛡️ <b>Safe & Robust</b>: Strong error handling and memory management.</li>
+            <li>🛠️ <b>Extensible</b>: Easy to add libraries and extend the language.</li>
+            <li>🌙 <b>Open Source</b>: Built by the community, for the community.</li>
+        </ul>
+    </div>
+    <div style="max-width:700px;text-align:center;margin-bottom:32px;">
+        <h2 style="color:#ff2d2d;">Get Started</h2>
+        <ol style="color:#ff6b6b;font-size:1.1rem;line-height:1.7;text-align:left;display:inline-block;">
+            <li>Clone the <a href="https://github.com/moah0911/Demon" style="color:#ff2d2d;">GitHub repository</a></li>
+            <li>Read the <b>README</b> for setup instructions</li>
+            <li>Try out the <b>examples</b> in the <code>examples/</code> folder</li>
+            <li>Join the community and contribute!</li>
+        </ol>
+    </div>
+    <div class="features">
+        <div class="feature-card">
+            <h3 style="color:#ff2d2d;margin-top:0;">🚀 Fast Compilation</h3>
+            <p>Build and run your code in seconds, with a compiler designed for speed and efficiency.</p>
+        </div>
+        <div class="feature-card">
+            <h3 style="color:#ff2d2d;margin-top:0;">🧠 Smart Error Reporting</h3>
+            <p>Helpful, clear error messages and suggestions to keep you productive and learning.</p>
+        </div>
+        <div class="feature-card">
+            <h3 style="color:#ff2d2d;margin-top:0;">🌐 Cross-Platform</h3>
+            <p>Write code once, run anywhere. Demon supports Linux, Windows, and more.</p>
+        </div>
+        <div class="feature-card">
+            <h3 style="color:#ff2d2d;margin-top:0;">🔒 Secure by Design</h3>
+            <p>Memory safety and modern security features are built in from the start.</p>
+        </div>
+    </div>
     <div class="footer">&copy; 2025 moah0911 &mdash; <a href="https://github.com/moah0911/Demon" style="color:#ff2d2d;">GitHub</a></div>
+</body>
+<script>
+// Cool animated background: moving red particles
+const canvas = document.querySelector('.bg-anim');
+const ctx = canvas.getContext('2d');
+let w = window.innerWidth, h = window.innerHeight;
+canvas.width = w; canvas.height = h;
+let particles = Array.from({length: 48}, () => ({
+    x: Math.random()*w,
+    y: Math.random()*h,
+    r: 1.5 + Math.random()*2.5,
+    dx: -1 + Math.random()*2,
+    dy: -1 + Math.random()*2,
+    alpha: 0.3 + Math.random()*0.5
+}));
+function draw() {
+    ctx.clearRect(0,0,w,h);
+    for (let p of particles) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 2*Math.PI);
+        ctx.fillStyle = `rgba(255,45,45,${p.alpha})`;
+        ctx.shadowColor = '#ff2d2d';
+        ctx.shadowBlur = 16;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        p.x += p.dx; p.y += p.dy;
+        if (p.x < 0 || p.x > w) p.dx *= -1;
+        if (p.y < 0 || p.y > h) p.dy *= -1;
+    }
+    requestAnimationFrame(draw);
+}
+draw();
+window.addEventListener('resize', () => {
+    w = window.innerWidth; h = window.innerHeight;
+    canvas.width = w; canvas.height = h;
+});
+</script>
 </body>
 </html>
