@@ -31,7 +31,7 @@ We provide simple installation scripts for both Linux/macOS and Windows.
 1.  **Clone the repository:**
     ```sh
     git clone https://github.com/moah0911/Demon.git
-    cd Demon/demon-lang
+    cd Demon/
     ```
 
 2.  **Run the installation script:**
